@@ -497,6 +497,10 @@ details.expl p{font-size:13.5px;line-height:1.6;margin-top:6px}
 /* round avatars never squeeze */
 .avatar{flex:none;aspect-ratio:1/1;min-width:0}
 .mentor .avatar{flex:0 0 48px}
+
+/* streaming answer */
+.st-txt{white-space:pre-wrap}
+.caret{display:inline-block;width:7px;height:14px;margin-left:2px;vertical-align:-2px;background:var(--blue);animation:blink 1s infinite}
 </style>
 </head>
 <body>
@@ -2011,7 +2015,7 @@ function chatHtml(pid){
   var c=S.chats[pid]||[];
   var h='<div class="msg ai"><span class="who">AI</span>'+esc(t('ai_hello'))+'</div>';
   h+=c.map(function(m){return m.r==='me'?'<div class="msg me">'+esc(m.t)+'</div>':m.err?'<div class="msg err" role="alert">'+esc(m.t)+'</div>':'<div class="msg ai"><span class="who">AI</span>'+md(m.t)+'</div>'}).join('');
-  if(PENDING[pid])h+='<div class="msg ai typing" aria-live="polite"><span class="who">AI</span><span class="dots"><i></i><i></i><i></i></span> '+esc(t('ai_thinking'))+'</div>';
+  if(PENDING[pid])h+=STREAM[pid]?'<div class="msg ai" id="streammsg"><span class="who">AI</span><span class="st-txt">'+esc(STREAM[pid])+'</span><i class="caret"></i></div>':'<div class="msg ai typing" aria-live="polite"><span class="who">AI</span><span class="dots"><i></i><i></i><i></i></span> '+esc(t('ai_thinking'))+'</div>';
   return h;
 }
 
@@ -2023,7 +2027,7 @@ var GROQ={
   models:['gemini-3.8-flash','gemini-3.6-flash','openai/gpt-oss-120b'] // основная — Gemini, запасная — Groq
 };
 var SYS_PROMPT='Ты — персональный AI-ментор по олимпиадной физике на платформе SolveTrack. Твоя методика — \'сначала подсказка\' (hint-first). Тебе СТРОГО ЗАПРЕЩЕНО выдавать готовое решение задачи, финальный ответ или полную цепочку формул сразу, даже если ученик прямо просит \'скажи ответ\' или \'реши за меня\'. Твоя задача — проверять ход мыслей ученика, находить концептуальные ошибки и давать только ОДНУ короткую наводящую подсказку или вопрос для следующего шага. Отвечай на языке пользователя.';
-var PENDING={};
+var PENDING={},STREAM={};
 function langName(){for(var i=0;i<LANGS.length;i++)if(LANGS[i][0]===LANG)return LANGS[i][1];return 'Русский'}
 function systemMessage(p){
   var x=pr(p);
@@ -2043,11 +2047,26 @@ function groqBody(model,messages,opts){
   var b={model:model,messages:messages,temperature:opts.json?0.2:0.4,max_completion_tokens:opts.max||700};
   if(opts.json&&!opts.noFormat&&!/^gemini/.test(model))b.response_format={type:'json_object'};
   if(/gpt-oss/.test(model)){b.reasoning_effort='low';b.max_completion_tokens=1500}
-  if(/^gemini/.test(model)){b.reasoning_effort='low';b.max_completion_tokens=Math.max(2000,opts.max||0)}
+  if(/^gemini/.test(model)){b.reasoning_effort=opts.fast?'minimal':'low';b.max_completion_tokens=Math.max(2000,opts.max||0)}
+  if(opts.onDelta)b.stream=true;
   return b;
 }
 /* Порядок моделей: сначала Gemini, при недоступности — запасная модель Groq.
    Модель, которую провайдер отключил, запоминается и больше не пробуется. */
+/* reads an OpenAI-style server-sent-events stream; calls onDelta with the text so far */
+function readSSE(r,onDelta){
+  var reader=r.body.getReader(),dec=new TextDecoder(),buf='',full='',idle=null;
+  return new Promise(function(resolve,reject){
+    function arm(){clearTimeout(idle);idle=setTimeout(function(){try{reader.cancel()}catch(e){}resolve(full.trim())},30000)}
+    function pump(){arm();reader.read().then(function(x){
+      if(x.done){clearTimeout(idle);resolve(full.trim());return}
+      buf+=dec.decode(x.value,{stream:true});var lines=buf.split('\n');buf=lines.pop();
+      lines.forEach(function(l){l=l.trim();if(l.indexOf('data:')!==0)return;var d=l.slice(5).trim();if(!d||d==='[DONE]')return;
+        try{var j=JSON.parse(d),c=j.choices&&j.choices[0],piece=c&&c.delta&&c.delta.content;if(piece){full+=piece;onDelta(full)}}catch(e){}});
+      pump()},function(e){clearTimeout(idle);if(full)resolve(full.trim());else reject(e)})}
+    pump();
+  });
+}
 function groqCall(messages,opts){
   var custom=opts&&opts.models;
   G.gone=G.gone||{};
@@ -2057,16 +2076,22 @@ function groqCall(messages,opts){
   function attempt(){
     var model=order[i];
     var ctl=window.AbortController?new AbortController():null;
-    var timer=setTimeout(function(){if(ctl)ctl.abort()},(opts&&opts.timeout)||45000);
+    var timer=setTimeout(function(){if(ctl)ctl.abort()},(opts&&opts.timeout)||(opts&&opts.fast?25000:45000));
     var hdr={'Content-Type':'application/json',Authorization:'Bearer '+accessToken(),apikey:SB_KEY};
     return fetch(GROQ.proxy,{method:'POST',headers:hdr,body:JSON.stringify(groqBody(model,messages,opts)),signal:ctl?ctl.signal:undefined})
-    .then(function(r){clearTimeout(timer);return r.text().then(function(txt){var j=null;try{j=JSON.parse(txt)}catch(e){}if(Array.isArray(j))j=j[0];return {r:r,j:j,txt:txt}})},
+    .then(function(r){clearTimeout(timer);
+      if(r.ok&&opts&&opts.onDelta&&r.body&&r.body.getReader&&/event-stream/.test(r.headers.get('content-type')||''))return {r:r,sse:true};
+      return r.text().then(function(txt){var j=null;try{j=JSON.parse(txt)}catch(e){}if(Array.isArray(j))j=j[0];return {r:r,j:j,txt:txt}})},
           function(e){clearTimeout(timer);
       if(e&&e.name==='AbortError'){if(i<order.length-1){i++;return attempt().then(function(x){return {done:x}})}throw new Error(t('e_timeout'))}
       var inFrame=false;try{inFrame=window.self!==window.top}catch(x){inFrame=true}
       throw new Error((inFrame?t('e_frame'):t('e_proxy'))+' ['+(e&&e.message||e)+']')})
     .then(function(res){
       if(res.done!==undefined)return res.done;
+      if(res.sse)return readSSE(res.r,opts.onDelta).then(function(out){
+        if(!out){if(i<order.length-1){i++;return attempt()}throw new Error(t('e_empty'))}
+        if(G.groqModel!==model&&!custom){G.groqModel=model;save()}
+        return out});
       if(res.r.ok){
         var m=res.j&&res.j.choices&&res.j.choices[0]&&res.j.choices[0].message;
         var out=m&&m.content?String(m.content).trim():'';
@@ -2094,9 +2119,14 @@ function askAI(pid){
   var c=S.chats[pid]=S.chats[pid]||[];
   var hist=c.filter(function(m){return !m.err}).slice(-20).map(function(m){return {role:m.r==='me'?'user':'assistant',content:m.api||m.t}});
   PENDING[pid]=true;save();refreshChat(pid);
-  groqCall([systemMessage(p)].concat(hist))
+  STREAM[pid]='';var first=true;
+  groqCall([systemMessage(p)].concat(hist),{fast:true,onDelta:function(txt){
+      STREAM[pid]=txt;
+      var el=document.querySelector('#streammsg .st-txt');
+      if(first||!el){first=false;refreshChat(pid);return}
+      el.textContent=txt;var ch=document.getElementById('chat');if(ch)ch.scrollTop=ch.scrollHeight}})
   .then(function(ans){c.push({r:'ai',t:ans})},function(e){c.push({r:'ai',t:t('e_prefix')+(e&&e.message||e),err:true})})
-  .then(function(){PENDING[pid]=false;save();refreshChat(pid)});
+  .then(function(){PENDING[pid]=false;STREAM[pid]='';save();refreshChat(pid)});
 }
 function md(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code>$1</code>')}
 function gradeSolution(p,text){

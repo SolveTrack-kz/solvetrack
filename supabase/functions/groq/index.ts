@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
   const key = Deno.env.get(provider.secret);
   if (!key) return json({ error: { message: provider.secret + " secret is not set" } }, 500);
 
-  body.stream = false;
+  body.stream = body.stream === true; // потоковый ответ: текст появляется по мере генерации
   if (provider === PROVIDERS.gemini) {
     // Gemini (OpenAI-совместимый режим): лимит ответа включает «размышления» модели
     body.max_tokens = Math.min(Number(body.max_completion_tokens) || 2000, 4000);
@@ -87,6 +87,10 @@ Deno.serve(async (req) => {
 
   return new Response(upstream.body, {
     status: upstream.status,
-    headers: { ...CORS, "Content-Type": "application/json" },
+    headers: {
+      ...CORS,
+      "Content-Type": upstream.headers.get("content-type") ?? "application/json",
+      "Cache-Control": "no-cache",
+    },
   });
 });
