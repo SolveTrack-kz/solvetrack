@@ -24,3 +24,10 @@
 3. **Edge Functions → Deploy a new function → Via Editor**, имя `groq`, вставить `supabase/functions/groq/index.ts`, выключить **Verify JWT** (проверка входа сделана внутри функции), **Deploy**.
 4. **Edge Functions → Secrets**: `GEMINI_API_KEY` = ключ из aistudio.google.com; по желанию `GROQ_API_KEY` = ключ с console.groq.com (запасной ИИ).
 5. Почта: встроенная почта Supabase отправляет письма только участникам команды проекта. Для учеников подключить свой SMTP (**Authentication → Emails → SMTP Settings**) или временно выключить подтверждение почты (**Authentication → Sign In / Providers → Email → Confirm email**).
+
+## Вход через Google
+
+1. console.cloud.google.com → новый проект → **Google Auth Platform** → **Get started** (имя приложения, почта, Audience: External).
+2. **Clients → Create client → Web application**. Authorized redirect URIs: `https://epuhxplzcqcbztrlxtwg.supabase.co/auth/v1/callback`. Скопировать Client ID и Client Secret.
+3. **Audience → Publish app**, чтобы входить мог любой Google-аккаунт.
+4. Supabase → **Authentication → Sign In / Providers → Google**: включить, вставить Client ID и Client Secret, **Save**.

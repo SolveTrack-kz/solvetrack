@@ -487,6 +487,12 @@ details.expl p{font-size:13.5px;line-height:1.6;margin-top:6px}
 .seg.sm button{padding:4px 10px;font-size:12px}
 .tbl tr.me td{background:var(--blue-soft)}
 .btn.busy{opacity:.6;pointer-events:none}
+
+/* Google sign-in */
+.g-btn{margin-top:18px;justify-content:center;gap:10px;padding:12px 16px;font-size:15px;font-weight:600;background:var(--surface);border:1.5px solid var(--line)}
+.g-btn:hover{border-color:var(--blue)}
+.or{display:flex;align-items:center;gap:12px;margin:18px 0 4px;color:var(--muted);font-size:12.5px}
+.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
 </style>
 </head>
 <body>
@@ -834,6 +840,7 @@ t_proxy_bad:'The address must start with https://'
 var LANG='ru';
 /* ---------- i18n: accounts, entry test, roadmap ---------- */
 Object.assign(L.ru,{
+cl_google:'Войти через Google',cl_or:'или по почте',cl_ob_h:'Добро пожаловать, {0}!',cl_ob_p:'Последний шаг: укажи класс. Пробный экзамен подберёт задачи под него.',cl_ob_btn:'Продолжить',cl_g_off:'Вход через Google ещё не включён на сервере. Войди по почте или сообщи администратору.',
 cl_note:'Прогресс сохраняется в облаке: можно входить с телефона и компьютера.',cl_check_h:'Проверь почту',cl_check_p:'Мы отправили письмо на <b>{0}</b>. Открой его и нажми ссылку, чтобы подтвердить адрес. После этого войди.',cl_check_r1:'Письмо может прийти через пару минут. Загляни в папку «Спам».',cl_check_r2:'Ссылку можно открыть на любом устройстве.',cl_resend:'Отправить письмо ещё раз',cl_resent:'Письмо отправлено ещё раз',cl_confirmed:'Почта подтверждена. Добро пожаловать!',cl_confirmed_login:'Почта подтверждена. Теперь войди.',cl_not_confirmed:'Почта ещё не подтверждена. Найди письмо от SolveTrack и нажми ссылку в нём.',cl_mail_blocked:'Сервер пока не может отправлять письма на этот адрес. Сообщи учителю или администратору сайта.',cl_rate:'Слишком много попыток. Подожди немного и попробуй снова.',cl_net:'Нет связи с сервером. Проверь интернет.',cl_forgot_link:'Забыл пароль?',cl_forgot_h:'Восстановление пароля',cl_forgot_p:'Укажи почту, с которой регистрировался. Мы пришлём ссылку для нового пароля.',cl_forgot_btn:'Прислать ссылку',cl_forgot_sent:'Ссылка для нового пароля отправлена на {0}.',cl_new_h:'Новый пароль',cl_pass_ok:'Пароль изменён',cl_off_h:'Нет связи с сервером',cl_off_p:'Не удалось загрузить модуль входа. Проверь интернет и обнови страницу.',cl_sync_err:'Не удалось сохранить в облако. Прогресс сохранён на этом устройстве, повторим позже.',cl_all:'Все',cl_ai_s:'ИИ работает через сервер SolveTrack: ключи хранить в браузере не нужно.',cl_fn_missing:'ИИ на сервере ещё не подключён (нет функции groq).',cl_fn_nokey:'На сервере не задан ключ ИИ (секрет GEMINI_API_KEY).',cl_relogin:'Сессия истекла. Выйди и войди снова.',
 dx_new_h:'В тесте появились новые вопросы',dx_new_p:'Добавлено {0} вопросов по динамике, законам сохранения, статике, колебаниям, газам, электростатике, магнетизму, индукции и оптике. Пройди тест заново, чтобы ИИ знал твои слабые места и в этих темах.',
 more_h:'Где ещё порешать',more_p:'Задачи на сайте составлены специально для SolveTrack. Оригинальные олимпиадные задачи с решениями — здесь:',more_mathus:'Материалы И. В. Яковлева: задачи олимпиад по классам и темам',more_phors:'Задачи олимпиад по физике',
@@ -878,6 +885,7 @@ rm_mis_h:'Разобрать: {0}',rm_mis_p:'Прочитай разбор и о
 rm_need_diag:'Дорожная карта строится по входному тесту. Пройди его, это около 13 минут.'
 });
 Object.assign(L.kk,{
+cl_google:'Google арқылы кіру',cl_or:'немесе пошта арқылы',cl_ob_h:'Қош келдің, {0}!',cl_ob_p:'Соңғы қадам: сыныбыңды көрсет. Сынақ емтихан есептерді соған қарай таңдайды.',cl_ob_btn:'Жалғастыру',cl_g_off:'Google арқылы кіру серверде әлі қосылмаған. Пошта арқылы кір немесе әкімшіге хабарла.',
 cl_note:'Прогресс бұлтта сақталады: телефоннан да, компьютерден де кіруге болады.',cl_check_h:'Поштаңды тексер',cl_check_p:'Біз <b>{0}</b> мекенжайына хат жібердік. Мекенжайды растау үшін оны ашып, сілтемені бас. Содан кейін кір.',cl_check_r1:'Хат бірнеше минуттан кейін келуі мүмкін. «Спам» қалтасын да қара.',cl_check_r2:'Сілтемені кез келген құрылғыда ашуға болады.',cl_resend:'Хатты қайта жіберу',cl_resent:'Хат қайта жіберілді',cl_confirmed:'Пошта расталды. Қош келдің!',cl_confirmed_login:'Пошта расталды. Енді кір.',cl_not_confirmed:'Пошта әлі расталмаған. SolveTrack-тен келген хатты тауып, ондағы сілтемені бас.',cl_mail_blocked:'Сервер әзірге бұл мекенжайға хат жібере алмайды. Мұғалімге немесе сайт әкімшісіне хабарла.',cl_rate:'Әрекет тым көп. Біраз күтіп, қайта көр.',cl_net:'Сервермен байланыс жоқ. Интернетті тексер.',cl_forgot_link:'Құпиясөзді ұмыттың ба?',cl_forgot_h:'Құпиясөзді қалпына келтіру',cl_forgot_p:'Тіркелген поштаңды көрсет. Жаңа құпиясөзге сілтеме жібереміз.',cl_forgot_btn:'Сілтеме жіберу',cl_forgot_sent:'Жаңа құпиясөзге сілтеме {0} мекенжайына жіберілді.',cl_new_h:'Жаңа құпиясөз',cl_pass_ok:'Құпиясөз өзгертілді',cl_off_h:'Сервермен байланыс жоқ',cl_off_p:'Кіру модулін жүктеу мүмкін болмады. Интернетті тексеріп, бетті жаңарт.',cl_sync_err:'Бұлтқа сақтау мүмкін болмады. Прогресс осы құрылғыда сақталды, кейін қайталаймыз.',cl_all:'Барлығы',cl_ai_s:'ЖИ SolveTrack сервері арқылы жұмыс істейді: браузерде кілт сақтаудың қажеті жоқ.',cl_fn_missing:'Серверде ЖИ әлі қосылмаған (groq функциясы жоқ).',cl_fn_nokey:'Серверде ЖИ кілті көрсетілмеген (GEMINI_API_KEY құпиясы).',cl_relogin:'Сессия аяқталды. Шығып, қайта кір.',
 dx_new_h:'Тестке жаңа сұрақтар қосылды',dx_new_p:'Динамика, сақталу заңдары, статика, тербелістер, газдар, электростатика, магнетизм, индукция және оптика бойынша {0} сұрақ қосылды. ЖИ осы тақырыптардағы әлсіз жақтарыңды да білуі үшін тестті қайта өт.',
 more_h:'Тағы қайда шешуге болады',more_p:'Сайттағы есептер SolveTrack үшін арнайы құрастырылған. Шешімдері бар түпнұсқа олимпиада есептері — мына жерде:',more_mathus:'И. В. Яковлевтің материалдары: сыныптар мен тақырыптар бойынша олимпиада есептері',more_phors:'Физикадан олимпиада есептері',
@@ -922,6 +930,7 @@ rm_mis_h:'Талдау: {0}',rm_mis_p:'Талдауды оқып, тексеру
 rm_need_diag:'Жол картасы кіріс тесті бойынша құрылады. Одан өт, бұл шамамен 13 минут.'
 });
 Object.assign(L.en,{
+cl_google:'Continue with Google',cl_or:'or with email',cl_ob_h:'Welcome, {0}!',cl_ob_p:'One last step: choose your grade. The placement exam will pick problems for it.',cl_ob_btn:'Continue',cl_g_off:'Google sign-in isn’t enabled on the server yet. Use email or tell the site admin.',
 cl_note:'Your progress is saved in the cloud: sign in from your phone or computer.',cl_check_h:'Check your email',cl_check_p:'We sent an email to <b>{0}</b>. Open it and click the link to confirm your address. Then sign in.',cl_check_r1:'The email may take a couple of minutes. Check your spam folder.',cl_check_r2:'You can open the link on any device.',cl_resend:'Resend the email',cl_resent:'Email sent again',cl_confirmed:'Email confirmed. Welcome!',cl_confirmed_login:'Email confirmed. Now sign in.',cl_not_confirmed:'Your email isn’t confirmed yet. Find the email from SolveTrack and click the link.',cl_mail_blocked:'The server can’t send emails to this address yet. Tell your teacher or the site admin.',cl_rate:'Too many attempts. Wait a little and try again.',cl_net:'No connection to the server. Check your internet.',cl_forgot_link:'Forgot your password?',cl_forgot_h:'Reset password',cl_forgot_p:'Enter the email you signed up with. We’ll send a link to set a new password.',cl_forgot_btn:'Send link',cl_forgot_sent:'A password reset link was sent to {0}.',cl_new_h:'New password',cl_pass_ok:'Password changed',cl_off_h:'No connection to the server',cl_off_p:'The sign-in module could not load. Check your internet and reload the page.',cl_sync_err:'Couldn’t save to the cloud. Progress is saved on this device; we’ll retry later.',cl_all:'All',cl_ai_s:'The AI runs through the SolveTrack server: no keys are stored in your browser.',cl_fn_missing:'The AI isn’t connected on the server yet (no groq function).',cl_fn_nokey:'The AI key isn’t set on the server (GEMINI_API_KEY secret).',cl_relogin:'Your session expired. Sign out and sign in again.',
 dx_new_h:'The test has new questions',dx_new_p:'{0} questions were added on dynamics, conservation laws, statics, oscillations, gases, electrostatics, magnetism, induction and optics. Retake the test so the AI knows your weak spots in these topics too.',
 more_h:'More problems',more_p:'The problems on this site were written specifically for SolveTrack. Original olympiad problems with solutions are here:',more_mathus:'I. V. Yakovlev’s materials: olympiad problems by grade and topic (in Russian)',more_phors:'Physics olympiad problems',
@@ -1393,7 +1402,7 @@ function loadCloud(user){
     if(data){for(var k in data)if(k!=='profile')S[k]=data[k]}
     if(local&&local.contests){S.contests=S.contests||{};for(var cid in local.contests){var lc=local.contests[cid];if(lc&&lc.photo&&S.contests[cid])S.contests[cid].photo=lc.photo}}
     S.profile=Object.assign({},PDEF,(local&&local.profile)||{},{
-      name:pr.name||md.name||'',grade:pr.grade||md.grade||'',role:pr.role||md.role||'student',school:pr.school||'',email:user.email||''});
+      name:pr.name||md.name||md.full_name||'',grade:pr.grade||md.grade||'',role:pr.role||md.role||'student',school:pr.school||'',email:user.email||''});
     if(['student','mentor','teacher'].indexOf(S.profile.role)<0)S.profile.role='student';
     if(S.rating==null&&pr.rating!=null)S.rating=pr.rating;
     S.subs=(S.subs||[]).filter(function(x){return byId(PROBLEMS,x.pid)});
@@ -1433,9 +1442,11 @@ function boot(){
   sb.auth.getSession().then(function(r){
     SESSION=r.data&&r.data.session||null;
     cleanAuthUrl();
-    if(err){AUTH_INFO={bad:true,text:err.replace(/\+/g,' ')}}
+    if(err){AUTH_INFO={bad:true,text:/provider is not enabled|unsupported provider/i.test(err)?t('cl_g_off'):err.replace(/\+/g,' ')}}
     else if(hadCode&&!SESSION){AUTH_INFO={ok:true,text:t('cl_confirmed_login')}}
-    if(SESSION&&!RECOVERY)return loadCloud(SESSION.user).then(function(){if(hadCode)AUTH_INFO={ok:true,text:t('cl_confirmed')}});
+    if(SESSION&&!RECOVERY)return loadCloud(SESSION.user).then(function(){
+      var prov=SESSION.user.app_metadata&&SESSION.user.app_metadata.provider;
+      if(hadCode)AUTH_INFO={ok:true,text:prov&&prov!=='email'?t('t_hello',firstName()):t('cl_confirmed')}});
   }).catch(function(e){BOOT_ERR=String(e&&e.message||e)}).then(function(){
     BOOTED=true;
     if(RECOVERY){nav('newpass');return}
@@ -1483,7 +1494,10 @@ function authPage(mode){
   }
   var grades=['7','8','9','10','11'].map(function(g){return '<option'+(g==='9'?' selected':'')+'>'+g+'</option>'}).join('')+'<option value="other">'+t('f_grade_other')+'</option>';
   return authShell('<h1>'+t(reg?'reg_h':'login_h')+'</h1><p class="sub">'+t(reg?'reg_p':'login_p')+'</p>'+
-  '<form class="form auth-form" id="'+(reg?'rform':'lform')+'" novalidate>'+info+
+  (AUTH_INFO&&AUTH_INFO.bad?'<div class="ferr" role="alert" style="margin-top:14px">'+esc(AUTH_INFO.text)+'</div>':'')+
+  '<button type="button" class="btn block g-btn" data-act="cl-google">'+ic('globe')+t('cl_google')+'</button>'+
+  '<div class="or"><span>'+t('cl_or')+'</span></div>'+
+  '<form class="form auth-form" id="'+(reg?'rform':'lform')+'" novalidate>'+(AUTH_INFO&&AUTH_INFO.bad?'':info)+
   (reg?'<label class="full">'+t('f_name')+'<input id="r_name" autocomplete="name" maxlength="60" placeholder="'+esc(t('f_name_ph'))+'"></label>':'')+
   '<label class="full">'+t('f_email')+'<input id="r_email" type="email" autocomplete="email" placeholder="name@example.com" value="'+(reg?'':esc(G.lastEmail||''))+'"></label>'+
   '<label class="full">'+t('f_pass')+'<input id="r_pass" type="password" autocomplete="'+(reg?'new-password':'current-password')+'"'+(reg?' placeholder="'+esc(t('f_pass_ph'))+'"':'')+'></label>'+
@@ -1493,6 +1507,26 @@ function authPage(mode){
   (reg?'':'<p class="auth-alt"><a href="#forgot">'+t('cl_forgot_link')+'</a></p>')+
   '<p class="auth-alt">'+t(reg?'have_acc':'no_acc')+' <a href="#'+(reg?'login':'register')+'">'+t(reg?'login_link':'reg_link')+'</a></p>'+
   '<p class="cap" style="text-align:center">'+t('cl_note')+'</p>');
+}
+function onboardPage(){
+  var grades=['7','8','9','10','11'].map(function(g){return '<option'+(g==='9'?' selected':'')+'>'+g+'</option>'}).join('')+'<option value="other">'+t('f_grade_other')+'</option>';
+  return authShell('<h1>'+t('cl_ob_h',esc(firstName()))+'</h1><p class="sub">'+t('cl_ob_p')+'</p><form class="form auth-form" id="obform" novalidate>'+
+  '<label class="full">'+t('f_name')+'<input id="r_name" maxlength="60" value="'+esc(S.profile.name||'')+'"></label>'+
+  '<label>'+t('f_grade')+'<select id="r_grade">'+grades+'</select></label><label>'+t('f_role')+'<select id="r_role"><option value="student">'+t('role_student')+'</option><option value="teacher">'+t('role_teacher')+'</option><option value="mentor">'+t('role_mentor')+'</option></select></label>'+
+  '<div class="ferr full" id="ferr" role="alert" hidden></div><button class="btn green block full" type="submit">'+t('cl_ob_btn')+' '+ic('arrow')+'</button></form>'+
+  '<p class="cap" style="text-align:center">'+esc(S.profile.email||'')+' · <button type="button" class="linkbtn" data-act="logout" style="color:var(--blue);text-decoration:none;font-size:inherit">'+t('logout')+'</button></p>');
+}
+function needsOnboard(){return loggedIn()&&!S.profile.grade&&!S.profile.onboarded&&!S.placement}
+function doOnboard(){
+  var v=function(i){var el=document.getElementById(i);return el?el.value.trim():''};
+  var nm=v('r_name');if(!nm)return formErr(t('e_name'));var gr=v('r_grade');
+  S.profile.name=nm;S.profile.grade=gr==='other'?'':gr;S.profile.role=v('r_role')||'student';S.profile.onboarded=true;
+  save();clearTimeout(SYNC_T);pushCloud();PX=null;toast(t('t_welcome'));nav('placement');
+}
+function doGoogle(){
+  if(!sb)return;
+  sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE_URL,queryParams:{prompt:'select_account'}}})
+  .then(function(r){if(r.error)throw r.error}).catch(function(e){toast(errText(e))});
 }
 function doRegister(){
   var v=function(i){var el=document.getElementById(i);return el?el.value.trim():''};
@@ -1565,6 +1599,7 @@ function leaderboard(){
 }
 document.addEventListener('click',function(e){
   var b=e.target.closest('[data-act^="cl-"]');if(!b)return;var a=b.getAttribute('data-act');
+  if(a==='cl-google'){doGoogle();return}
   if(a==='cl-lbdiv'){LB.div=+b.getAttribute('data-d');var el=document.getElementById('lb');if(el)el.outerHTML=leaderboard()}
   else if(a==='cl-resend'){var em=b.getAttribute('data-em');if(!em||!sb)return;b.disabled=true;
     sb.auth.resend({type:'signup',email:em,options:{emailRedirectTo:SITE_URL}}).then(function(r){if(r.error)throw r.error;toast(t('cl_resent'))}).catch(function(err){toast(errText(err));b.disabled=false})}
@@ -1573,6 +1608,7 @@ document.addEventListener('submit',function(e){
   var id=e.target.id;
   if(id==='fform'){e.preventDefault();doForgot()}
   else if(id==='npform'){e.preventDefault();doNewPass()}
+  else if(id==='obform'){e.preventDefault();doOnboard()}
 });
 
 
@@ -2535,6 +2571,8 @@ function renderView(keepScroll){
     if(!keepScroll){var f=document.querySelector('.auth-form input');if(f)f.focus()}
     return}
   if(!loggedIn()){nav(G.lastEmail?'login':'register');return}
+  if(needsOnboard()){if(h!=='onboard'){nav('onboard');return}root.innerHTML=onboardPage();return}
+  if(h==='onboard'){nav(S.placement?'dashboard':'placement');return}
   var m=/^problem-(\d+)$/.exec(h);
   if(m){root.innerHTML=shell('problems',problemPage(+m[1]));var c=document.getElementById('chat');if(c)c.scrollTop=c.scrollHeight;if(keepScroll)window.scrollTo(0,y);return}
   var cm=/^contest-(\d+)$/.exec(h);
