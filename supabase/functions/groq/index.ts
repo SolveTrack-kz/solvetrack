@@ -1,5 +1,6 @@
 // SolveTrack — посредник между сайтом и ИИ (Supabase Edge Function, имя: groq).
-// Основной ИИ — Google Gemini (секрет GEMINI_API_KEY), запасной — Groq (секрет GROQ_API_KEY, необязательно).
+// Всё бесплатно. Основной ИИ — Google Gemini (секрет GEMINI_API_KEY). Запасные (необязательно):
+// Groq (GROQ_API_KEY), GitHub Models (GITHUB_MODELS_TOKEN), OpenRouter (OPENROUTER_API_KEY).
 // Ключи хранятся только в секретах Supabase и не попадают в браузер.
 // Запросы принимаются только от вошедших учеников.
 //
@@ -18,6 +19,18 @@ const PROVIDERS = {
     url: "https://api.groq.com/openai/v1/chat/completions",
     secret: "GROQ_API_KEY",
     models: ["openai/gpt-oss-120b", "qwen/qwen3.8-27b", "meta-models/muse-spark-open"],
+  },
+  github: {
+    // GitHub Models: бесплатно с аккаунтом GitHub. Секрет — токен с правом "Models: read".
+    url: "https://models.github.ai/inference/chat/completions",
+    secret: "GITHUB_MODELS_TOKEN",
+    models: ["gh:openai/gpt-4.1-mini", "gh:openai/gpt-4.1"],
+  },
+  openrouter: {
+    // OpenRouter: бесплатные модели (:free). openrouter/free сам выбирает доступную бесплатную модель.
+    url: "https://openrouter.ai/api/v1/chat/completions",
+    secret: "OPENROUTER_API_KEY",
+    models: ["or:openrouter/free"],
   },
 } as const;
 const MAX_BODY = 4_000_000; // ~4 МБ: хватает на фото решения
@@ -75,13 +88,24 @@ Deno.serve(async (req) => {
     delete body.max_completion_tokens;
     delete body.response_format;
     if (!body.reasoning_effort) body.reasoning_effort = "low";
+  } else if (provider === PROVIDERS.github || provider === PROVIDERS.openrouter) {
+    body.model = model.slice(3); // убираем пометку "gh:" / "or:"
+    body.max_tokens = Math.min(Number(body.max_completion_tokens) || 700, 1500);
+    delete body.max_completion_tokens;
+    delete body.reasoning_effort;
+    if (provider === PROVIDERS.openrouter) delete body.response_format;
   } else {
     body.max_completion_tokens = Math.min(Number(body.max_completion_tokens) || 700, 1500);
   }
 
+  const headers: Record<string, string> = { Authorization: "Bearer " + key, "Content-Type": "application/json" };
+  if (provider === PROVIDERS.openrouter) {
+    headers["HTTP-Referer"] = "https://solvetrack-kz.github.io/solvetrack/";
+    headers["X-Title"] = "SolveTrack";
+  }
   const upstream = await fetch(provider.url, {
     method: "POST",
-    headers: { Authorization: "Bearer " + key, "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify(body),
   });
 
