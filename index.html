@@ -502,21 +502,96 @@ details.expl p{font-size:13.5px;line-height:1.6;margin-top:6px}
 .st-txt{white-space:pre-wrap}
 .caret{display:inline-block;width:7px;height:14px;margin-left:2px;vertical-align:-2px;background:var(--blue);animation:blink 1s infinite}
 
-/* sidebar: labels slide out on hover (desktop only) */
+/* sidebar: labels slide out on hover (desktop only) — clip-path reveal, no layout work per frame */
 .side .lbl{display:none}
 @media (min-width:761px){
   .shell>.main{grid-column:2}
-  .side{position:fixed;left:0;top:0;bottom:0;height:auto;width:72px;z-index:60;align-items:stretch;padding:14px 16px;overflow:hidden;contain:layout paint;
-    transition:width .2s cubic-bezier(.2,.8,.2,1) .05s,box-shadow .2s ease .05s}
-  .side a,.side button.nb,.side .logo-b{width:auto;min-width:40px;flex:none;display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:0 11px;white-space:nowrap;text-align:left}
-  .side .logo-b{height:40px;padding:0 8px;margin-bottom:14px}
-  .side .logo-b .i{flex:none;width:22px;height:22px}
+  .side{position:fixed;left:0;top:0;bottom:0;height:auto;width:236px;z-index:60;align-items:flex-start;padding:14px 16px;overflow:hidden;
+    clip-path:inset(0 164px 0 0);transition:clip-path .26s cubic-bezier(.22,.8,.24,1) .05s;will-change:clip-path}
+  .side a,.side button.nb{width:204px;flex:none;display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:0 11px;white-space:nowrap;text-align:left;background:none!important;isolation:isolate}
+  .side a::before,.side button.nb::before{content:'';position:absolute;inset:0;border-radius:10px;background:transparent;z-index:-1;
+    clip-path:inset(0 164px 0 0 round 10px);transition:clip-path .26s cubic-bezier(.22,.8,.24,1) .05s,background-color .15s}
+  .side a:hover::before,.side button.nb:hover::before{background:rgba(255,255,255,.08)}
+  .side a.on::before{background:var(--blue)}
+  .side .logo-b{width:204px;height:40px;flex:none;display:flex;align-items:center;gap:12px;padding:0 2px;margin-bottom:14px;background:none;white-space:nowrap}
+  .side .logo-b .i{flex:none;width:36px;height:36px;padding:8px;box-sizing:border-box;background:var(--blue);border-radius:10px}
   .side a .i,.side button.nb .i{flex:none}
-  .side .lbl{display:inline;font-size:14px;font-weight:500;opacity:0;transition:opacity .12s linear}
+  .side .lbl{display:inline;font-size:14px;font-weight:500;opacity:0;transition:opacity .14s linear}
   .side .logo-b .lbl{font-size:16px;font-weight:700;letter-spacing:-.01em}
   .side [data-tip]::after{display:none!important}
-  .side:hover,.side:has(:focus-visible){width:236px;box-shadow:6px 0 24px rgba(0,0,0,.3);transition-delay:.06s}
-  .side:hover .lbl,.side:has(:focus-visible) .lbl{opacity:1;transition:opacity .16s linear .08s}
+  .side:hover,.side:has(:focus-visible){clip-path:inset(0 0 0 0)}
+  .side:hover .lbl,.side:has(:focus-visible) .lbl{opacity:1;transition:opacity .2s linear .06s}
+  .side:hover a::before,.side:hover button.nb::before,.side:has(:focus-visible) a::before,.side:has(:focus-visible) button.nb::before{clip-path:inset(0 0 0 0 round 10px)}
+}
+@media (prefers-reduced-motion:reduce){.side,.side a::before,.side button.nb::before{transition:none!important}}
+
+/* roadmap: game-like path */
+.rm-hero{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;margin-bottom:18px;padding:24px 28px;background:linear-gradient(135deg,var(--surface) 0%,var(--blue-soft) 140%)}
+.ring-w{position:relative;width:132px;height:132px}
+.ring{width:132px;height:132px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:10}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--green);stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)}
+.ring-v{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.ring-v b{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.ring-v span{font-size:12px;color:var(--muted);margin-top:2px}
+.rh-m .kicker{margin-bottom:4px}
+.rh-m h2{margin:0 0 6px;font-size:22px;line-height:1.25;letter-spacing:-.01em}
+.rh-m p{margin:0 0 14px;color:var(--muted);font-size:14px;max-width:62ch}
+.btn.lg{padding:11px 20px;font-size:15px;border-radius:12px}
+.rh-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:5px 10px;border-radius:999px;background:var(--surface2);color:var(--muted);border:1px solid var(--line)}
+.chip .i{width:14px;height:14px}
+.chip.hot{color:var(--orange);background:var(--orange-soft);border-color:transparent}
+.rm-ai{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--ai-bg,var(--blue-soft));font-size:13px;margin-bottom:8px}
+.rm-ai>.i{flex:none;color:var(--purple,var(--blue))}
+.rm-ai-t{flex:1;min-width:0;color:var(--fg)}
+.rm-ai .btn{flex:none}
+.rmp{position:relative;padding:18px 0 8px;--amp:62px}
+.rm-svg{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.rm-svg path{fill:none;stroke-linecap:round}
+.rm-svg .trk{stroke:var(--line);stroke-width:8;stroke-dasharray:2 14}
+.rm-svg .pr{stroke:var(--green);stroke-width:8}
+.rn{position:relative;display:flex;align-items:center;justify-content:center;height:96px;transform:translateX(calc(var(--o) * var(--amp)))}
+.rn .node{position:relative;z-index:1;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;flex:none;border:0;cursor:pointer;
+  background:var(--surface);color:var(--muted);box-shadow:0 0 0 3px var(--line) inset,0 5px 0 var(--line);font:inherit;font-size:18px;text-decoration:none;
+  transition:transform .15s ease,box-shadow .15s ease}
+.rn a.node:hover,.rn button.node:hover{transform:translateY(-2px)}
+.rn a.node:active,.rn button.node:active{transform:translateY(3px);box-shadow:0 0 0 3px var(--line) inset,0 2px 0 var(--line)}
+.rn .node .i{width:24px;height:24px}
+.rn.done .node{background:var(--green);color:#fff;box-shadow:0 5px 0 var(--green-d,#15803d)}
+.rn.cur .node{width:70px;height:70px;background:var(--blue);color:#fff;font-size:22px;box-shadow:0 6px 0 #1d4ed8,0 0 0 0 rgba(37,99,235,.45);animation:rmPulse 2s infinite}
+.rn.goal .node{width:64px;height:64px;background:var(--surface2);color:var(--muted);cursor:default}
+.rn.goal.done .node{background:#f59e0b;color:#fff;box-shadow:0 5px 0 #b45309}
+.rn.goal .node .i{width:28px;height:28px}
+.rn.start .node{width:46px;height:46px;cursor:default}
+@keyframes rmPulse{0%{box-shadow:0 6px 0 #1d4ed8,0 0 0 0 rgba(37,99,235,.45)}70%{box-shadow:0 6px 0 #1d4ed8,0 0 0 16px rgba(37,99,235,0)}100%{box-shadow:0 6px 0 #1d4ed8,0 0 0 0 rgba(37,99,235,0)}}
+.here{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;
+  background:var(--fg);color:var(--bg);padding:4px 9px;border-radius:8px;animation:rmBob 1.6s ease-in-out infinite}
+.here::after{content:'';position:absolute;top:100%;left:50%;margin-left:-5px;border:5px solid transparent;border-top-color:var(--fg)}
+@keyframes rmBob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-4px)}}
+.rl{position:absolute;top:50%;transform:translateY(-50%);width:clamp(140px,34%,250px);font-size:13px;line-height:1.3}
+.rn.rgt .rl,.rn.start .rl,.rn.goal .rl{left:calc(50% + 46px)}
+.rn.lft .rl{right:calc(50% + 46px);text-align:right}
+.rl .kicker{font-size:10.5px;margin-bottom:2px}
+.rl .tt{font-weight:600;color:var(--fg)}
+.rn.next .rl .tt{color:var(--muted);font-weight:500}
+.rn.done .rl .tt{color:var(--muted)}
+.rl .wh{font-size:12px;color:var(--muted);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@media (prefers-reduced-motion:reduce){.rn.cur .node,.here{animation:none}}
+@media (max-width:760px){
+  .rm-hero{grid-template-columns:1fr;justify-items:center;text-align:center;padding:20px 18px;gap:16px}
+  .rh-meta{justify-content:center}
+  .rh-m p{margin-left:auto;margin-right:auto}
+  .rm-ai{flex-wrap:wrap}
+  .rmp{--amp:16px}
+  .rn{justify-content:flex-start;padding-left:30px;transform:none}
+  .rn .node{translate:calc(var(--o) * var(--amp)) 0}
+  .rm-ai-t{flex-basis:calc(100% - 30px)}
+  .rn .rl,.rn.lft .rl,.rn.rgt .rl,.rn.start .rl,.rn.goal .rl{left:128px;right:4px;width:auto;text-align:left}
+  .here{left:0;transform:none;font-size:10.5px}
+  @keyframes rmBob{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-4px)}}
+  .here::after{left:28px}
 }
 </style>
 </head>
@@ -864,7 +939,7 @@ t_proxy_bad:'The address must start with https://'
 }};
 var LANG='ru';
 /* ---------- i18n: accounts, entry test, roadmap ---------- */
-Object.assign(L.ru,{
+Object.assign(L.ru,{rm_here:'Ты здесь',rm_start_k:'Старт',rm_start:'Входной тест пройден',rm_finish:'Финиш',rm_goal_lv:'Уровень «{0}»',rm_goal_top:'Готов к олимпиаде',rm_of:'{0} из {1}',rm_go:'Начать',rm_next:'Следующий шаг',rm_all_h:'Все шаги пройдены!',rm_all_p:'Отличная работа. Попроси ИИ построить следующий отрезок пути.',rm_left:'До финиша {0} шагов',rm_almost:'Почти у цели — осталось {0}',rm_streak:'Серия: {0} дн.',
 cl_google:'Войти через Google',cl_or:'или по почте',cl_ob_h:'Добро пожаловать, {0}!',cl_ob_p:'Последний шаг: укажи класс. Пробный экзамен подберёт задачи под него.',cl_ob_btn:'Продолжить',cl_g_off:'Вход через Google ещё не включён на сервере. Войди по почте или сообщи администратору.',
 cl_note:'Прогресс сохраняется в облаке: можно входить с телефона и компьютера.',cl_check_h:'Проверь почту',cl_check_p:'Мы отправили письмо на <b>{0}</b>. Открой его и нажми ссылку, чтобы подтвердить адрес. После этого войди.',cl_check_r1:'Письмо может прийти через пару минут. Загляни в папку «Спам».',cl_check_r2:'Ссылку можно открыть на любом устройстве.',cl_resend:'Отправить письмо ещё раз',cl_resent:'Письмо отправлено ещё раз',cl_confirmed:'Почта подтверждена. Добро пожаловать!',cl_confirmed_login:'Почта подтверждена. Теперь войди.',cl_not_confirmed:'Почта ещё не подтверждена. Найди письмо от SolveTrack и нажми ссылку в нём.',cl_mail_blocked:'Сервер пока не может отправлять письма на этот адрес. Сообщи учителю или администратору сайта.',cl_rate:'Слишком много попыток. Подожди немного и попробуй снова.',cl_net:'Нет связи с сервером. Проверь интернет.',cl_forgot_link:'Забыл пароль?',cl_forgot_h:'Восстановление пароля',cl_forgot_p:'Укажи почту, с которой регистрировался. Мы пришлём ссылку для нового пароля.',cl_forgot_btn:'Прислать ссылку',cl_forgot_sent:'Ссылка для нового пароля отправлена на {0}.',cl_new_h:'Новый пароль',cl_pass_ok:'Пароль изменён',cl_off_h:'Нет связи с сервером',cl_off_p:'Не удалось загрузить модуль входа. Проверь интернет и обнови страницу.',cl_sync_err:'Не удалось сохранить в облако. Прогресс сохранён на этом устройстве, повторим позже.',cl_all:'Все',cl_ai_s:'ИИ работает через сервер SolveTrack: ключи хранить в браузере не нужно.',cl_fn_missing:'ИИ на сервере ещё не подключён (нет функции groq).',cl_fn_nokey:'На сервере не задан ключ ИИ (секрет GEMINI_API_KEY).',cl_relogin:'Сессия истекла. Выйди и войди снова.',
 dx_new_h:'В тесте появились новые вопросы',dx_new_p:'Добавлено {0} вопросов по динамике, законам сохранения, статике, колебаниям, газам, электростатике, магнетизму, индукции и оптике. Пройди тест заново, чтобы ИИ знал твои слабые места и в этих темах.',
@@ -909,7 +984,7 @@ fixed:'Исправлено',t_fixed:'Верно! Заблуждение исп�
 rm_mis_h:'Разобрать: {0}',rm_mis_p:'Прочитай разбор и ответь на проверочный вопрос.',go_mis:'Разобрать →',step_mis:'Заблуждение',step_prob:'Задача',
 rm_need_diag:'Дорожная карта строится по входному тесту. Пройди его, это около 13 минут.'
 });
-Object.assign(L.kk,{
+Object.assign(L.kk,{rm_here:'Сен осындасың',rm_start_k:'Бастау',rm_start:'Кіру тесті өтілді',rm_finish:'Мәре',rm_goal_lv:'«{0}» деңгейі',rm_goal_top:'Олимпиадаға дайынсың',rm_of:'{1} ішінен {0}',rm_go:'Бастау',rm_next:'Келесі қадам',rm_all_h:'Барлық қадам өтілді!',rm_all_p:'Керемет. ЖИ-ден жолдың келесі бөлігін құруды сұра.',rm_left:'Мәреге дейін {0} қадам',rm_almost:'Мақсатқа жақынсың — {0} қалды',rm_streak:'Қатарынан: {0} күн',
 cl_google:'Google арқылы кіру',cl_or:'немесе пошта арқылы',cl_ob_h:'Қош келдің, {0}!',cl_ob_p:'Соңғы қадам: сыныбыңды көрсет. Сынақ емтихан есептерді соған қарай таңдайды.',cl_ob_btn:'Жалғастыру',cl_g_off:'Google арқылы кіру серверде әлі қосылмаған. Пошта арқылы кір немесе әкімшіге хабарла.',
 cl_note:'Прогресс бұлтта сақталады: телефоннан да, компьютерден де кіруге болады.',cl_check_h:'Поштаңды тексер',cl_check_p:'Біз <b>{0}</b> мекенжайына хат жібердік. Мекенжайды растау үшін оны ашып, сілтемені бас. Содан кейін кір.',cl_check_r1:'Хат бірнеше минуттан кейін келуі мүмкін. «Спам» қалтасын да қара.',cl_check_r2:'Сілтемені кез келген құрылғыда ашуға болады.',cl_resend:'Хатты қайта жіберу',cl_resent:'Хат қайта жіберілді',cl_confirmed:'Пошта расталды. Қош келдің!',cl_confirmed_login:'Пошта расталды. Енді кір.',cl_not_confirmed:'Пошта әлі расталмаған. SolveTrack-тен келген хатты тауып, ондағы сілтемені бас.',cl_mail_blocked:'Сервер әзірге бұл мекенжайға хат жібере алмайды. Мұғалімге немесе сайт әкімшісіне хабарла.',cl_rate:'Әрекет тым көп. Біраз күтіп, қайта көр.',cl_net:'Сервермен байланыс жоқ. Интернетті тексер.',cl_forgot_link:'Құпиясөзді ұмыттың ба?',cl_forgot_h:'Құпиясөзді қалпына келтіру',cl_forgot_p:'Тіркелген поштаңды көрсет. Жаңа құпиясөзге сілтеме жібереміз.',cl_forgot_btn:'Сілтеме жіберу',cl_forgot_sent:'Жаңа құпиясөзге сілтеме {0} мекенжайына жіберілді.',cl_new_h:'Жаңа құпиясөз',cl_pass_ok:'Құпиясөз өзгертілді',cl_off_h:'Сервермен байланыс жоқ',cl_off_p:'Кіру модулін жүктеу мүмкін болмады. Интернетті тексеріп, бетті жаңарт.',cl_sync_err:'Бұлтқа сақтау мүмкін болмады. Прогресс осы құрылғыда сақталды, кейін қайталаймыз.',cl_all:'Барлығы',cl_ai_s:'ЖИ SolveTrack сервері арқылы жұмыс істейді: браузерде кілт сақтаудың қажеті жоқ.',cl_fn_missing:'Серверде ЖИ әлі қосылмаған (groq функциясы жоқ).',cl_fn_nokey:'Серверде ЖИ кілті көрсетілмеген (GEMINI_API_KEY құпиясы).',cl_relogin:'Сессия аяқталды. Шығып, қайта кір.',
 dx_new_h:'Тестке жаңа сұрақтар қосылды',dx_new_p:'Динамика, сақталу заңдары, статика, тербелістер, газдар, электростатика, магнетизм, индукция және оптика бойынша {0} сұрақ қосылды. ЖИ осы тақырыптардағы әлсіз жақтарыңды да білуі үшін тестті қайта өт.',
@@ -954,7 +1029,7 @@ fixed:'Түзетілді',t_fixed:'Дұрыс! Қате түсінік түзе
 rm_mis_h:'Талдау: {0}',rm_mis_p:'Талдауды оқып, тексеру сұрағына жауап бер.',go_mis:'Талдау →',step_mis:'Қате түсінік',step_prob:'Есеп',
 rm_need_diag:'Жол картасы кіріс тесті бойынша құрылады. Одан өт, бұл шамамен 13 минут.'
 });
-Object.assign(L.en,{
+Object.assign(L.en,{rm_here:'You are here',rm_start_k:'Start',rm_start:'Entry test done',rm_finish:'Finish',rm_goal_lv:'“{0}” level',rm_goal_top:'Olympiad-ready',rm_of:'{0} of {1}',rm_go:'Start',rm_next:'Next step',rm_all_h:'All steps done!',rm_all_p:'Great work. Ask the AI to build the next stretch of the path.',rm_left:'{0} steps to the finish',rm_almost:'Almost there — {0} left',rm_streak:'Streak: {0} d',
 cl_google:'Continue with Google',cl_or:'or with email',cl_ob_h:'Welcome, {0}!',cl_ob_p:'One last step: choose your grade. The placement exam will pick problems for it.',cl_ob_btn:'Continue',cl_g_off:'Google sign-in isn’t enabled on the server yet. Use email or tell the site admin.',
 cl_note:'Your progress is saved in the cloud: sign in from your phone or computer.',cl_check_h:'Check your email',cl_check_p:'We sent an email to <b>{0}</b>. Open it and click the link to confirm your address. Then sign in.',cl_check_r1:'The email may take a couple of minutes. Check your spam folder.',cl_check_r2:'You can open the link on any device.',cl_resend:'Resend the email',cl_resent:'Email sent again',cl_confirmed:'Email confirmed. Welcome!',cl_confirmed_login:'Email confirmed. Now sign in.',cl_not_confirmed:'Your email isn’t confirmed yet. Find the email from SolveTrack and click the link.',cl_mail_blocked:'The server can’t send emails to this address yet. Tell your teacher or the site admin.',cl_rate:'Too many attempts. Wait a little and try again.',cl_net:'No connection to the server. Check your internet.',cl_forgot_link:'Forgot your password?',cl_forgot_h:'Reset password',cl_forgot_p:'Enter the email you signed up with. We’ll send a link to set a new password.',cl_forgot_btn:'Send link',cl_forgot_sent:'A password reset link was sent to {0}.',cl_new_h:'New password',cl_pass_ok:'Password changed',cl_off_h:'No connection to the server',cl_off_p:'The sign-in module could not load. Check your internet and reload the page.',cl_sync_err:'Couldn’t save to the cloud. Progress is saved on this device; we’ll retry later.',cl_all:'All',cl_ai_s:'The AI runs through the SolveTrack server: no keys are stored in your browser.',cl_fn_missing:'The AI isn’t connected on the server yet (no groq function).',cl_fn_nokey:'The AI key isn’t set on the server (GEMINI_API_KEY secret).',cl_relogin:'Your session expired. Sign out and sign in again.',
 dx_new_h:'The test has new questions',dx_new_p:'{0} questions were added on dynamics, conservation laws, statics, oscillations, gases, electrostatics, magnetism, induction and optics. Retake the test so the AI knows your weak spots in these topics too.',
@@ -1805,10 +1880,84 @@ function levelCard(){
 function topicsCard(){
   return '<div class="card"><h3>'+t('topics_h')+'</h3><div class="list">'+TOPICS.map(function(tp,i){var s=topicState(tp);return '<div class="row"><span>'+topicName(i)+'</span><span class="pill '+(s.k==='done'?'p-easy':s.k==='weak'?'p-mid':'p-gray')+'">'+(s.k==='new'?t('not_started'):s.s+' / 100')+'</span></div>'}).join('')+'</div></div>';
 }
+/* ---------- roadmap: game-like path ---------- */
+function rmSteps(){
+  var st=[];
+  if(S.plan){S.plan.steps.forEach(function(x){
+    if(x.type==='mis'){var m=mById(x.id);if(!m)return;st.push({kind:'mis',id:x.id,title:mi(m).title,why:x.why,done:!!S.misFix[x.id],kick:t('step_mis')})}
+    else{var p=byId(PROBLEMS,x.id);if(!p)return;st.push({kind:'prob',id:p.id,title:pr(p).title,why:x.why,done:status(p.id)==='ok',kick:t('step_prob')+' · '+t('lvl'+p.lvl)})}
+  })}
+  else roadmapItems().slice(0,10).forEach(function(it){
+    st.push(it.mid?{kind:'mis',id:it.mid,title:it.h,why:it.p,done:false,kick:t('step_mis')}:{kind:'prob',id:it.pid,title:it.h,why:it.p,done:it.k==='done',kick:t('step_prob')})});
+  var d=st.filter(function(x){return x.done}),o=st.filter(function(x){return !x.done});
+  return d.concat(o);
+}
+function rmStreak(){
+  var days={};S.subs.forEach(function(s){days[dayKey(s.ts)]=1});
+  var n=0,d=new Date();if(!days[dayKey(d)])d.setDate(d.getDate()-1);
+  while(days[dayKey(d)]){n++;d.setDate(d.getDate()-1)}
+  return n;
+}
+function rmHref(x){return x.kind==='mis'?'':'#problem-'+x.id}
+function rmNode(x,i,cur,side){
+  var cls=x.done?'done':i===cur?'cur':'next',inner=x.done?ic('check'):i===cur?'<b>'+(i+1)+'</b>':'<b>'+(i+1)+'</b>';
+  var tag=x.kind==='mis'?'button type="button" data-act="gomis" data-m="'+x.id+'"':'a href="'+rmHref(x)+'"';
+  var etag=x.kind==='mis'?'button':'a';
+  return '<div class="rn '+cls+' '+side+'" style="--o:'+RM_OFF[i%RM_OFF.length]+'">'+
+    '<'+tag+' class="node" aria-label="'+esc(x.title)+'">'+(i===cur?'<span class="here">'+t('rm_here')+'</span>':'')+inner+'</'+etag+'>'+
+    '<div class="rl"><div class="kicker">'+esc(x.kick)+'</div><div class="tt">'+esc(x.title)+'</div>'+(i===cur?'<div class="wh">'+esc(x.why)+'</div>':'')+'</div></div>';
+}
+var RM_OFF=[0,1,1.5,1,0,-1,-1.5,-1];
+function rmPath(st,cur){
+  var lv=effLevel(),goal=lv<3?t('rm_goal_lv',t('L'+(lv+1))):t('rm_goal_top');
+  var h='<div class="rmp" id="rmp"><svg class="rm-svg" aria-hidden="true"><path class="trk"/><path class="pr"/></svg>';
+  h+='<div class="rn done start" style="--o:-1"><span class="node">'+ic('check')+'</span><div class="rl"><div class="kicker">'+t('rm_start_k')+'</div><div class="tt">'+t('rm_start')+'</div></div></div>';
+  st.forEach(function(x,i){var o=RM_OFF[i%RM_OFF.length];h+=rmNode(x,i,cur,o>0?'lft':'rgt')});
+  var all=cur<0;
+  h+='<div class="rn goal '+(all?'done':'lock')+'" style="--o:0"><span class="node">'+ic('trophy')+'</span><div class="rl"><div class="kicker">'+t('rm_finish')+'</div><div class="tt">'+esc(goal)+'</div></div></div>';
+  return h+'</div>';
+}
+function rmHero(st,cur){
+  var tot=st.length+1,dn=st.filter(function(x){return x.done}).length+1,pc=Math.round(dn/tot*100),left=tot-dn,sk=rmStreak();
+  var R=46,C=2*Math.PI*R;
+  var ring='<svg class="ring" viewBox="0 0 110 110"><circle cx="55" cy="55" r="'+R+'" class="bg"/><circle cx="55" cy="55" r="'+R+'" class="fg" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-pc/100)).toFixed(1)+'"/></svg><div class="ring-v"><b>'+pc+'%</b><span>'+t('rm_of',dn,tot)+'</span></div>';
+  var nx=cur>=0?st[cur]:null,btn='';
+  if(nx)btn=nx.kind==='mis'?'<button class="btn green lg" data-act="gomis" data-m="'+nx.id+'">'+t('rm_go')+' '+ic('arrow')+'</button>':'<a class="btn green lg" href="'+rmHref(nx)+'">'+t('rm_go')+' '+ic('arrow')+'</a>';
+  var h='<div class="card rm-hero"><div class="ring-w">'+ring+'</div><div class="rh-m">';
+  if(nx)h+='<div class="kicker">'+t('rm_next')+'</div><h2>'+esc(nx.title)+'</h2><p>'+esc(nx.why)+'</p>'+btn;
+  else h+='<div class="kicker">'+t('rm_next')+'</div><h2>'+t('rm_all_h')+'</h2><p>'+t('rm_all_p')+'</p><button class="btn green lg" data-act="aiplan"'+(PLAN_PENDING?' disabled':'')+'>'+t('ai_plan_btn')+'</button>';
+  h+='<div class="rh-meta">'+(left>0?'<span class="chip">'+ic('target')+(left<=2?t('rm_almost',left):t('rm_left',left))+'</span>':'')+'<span class="chip '+(sk?'hot':'')+'">'+ic('bolt')+t('rm_streak',sk)+'</span></div>';
+  return h+'</div></div>';
+}
+function rmAiBar(){
+  var h='<div class="rm-ai">'+ic('spark')+'<div class="rm-ai-t">';
+  if(PLAN_PENDING)h+='<span class="dots"><i></i><i></i><i></i></span> '+t('ai_plan_wait');
+  else if(S.planErr)h+='<span style="color:var(--red)">'+esc(t('ai_plan_err',S.planErr))+'</span>';
+  else if(S.plan&&S.plan.summary)h+=esc(S.plan.summary)+' <span class="cap" style="display:inline">· '+t('ai_plan_upd',fmtDate(S.plan.ts))+'</span>';
+  else h+=t('ai_plan_none');
+  return h+'</div><button class="btn sm" data-act="aiplan"'+(PLAN_PENDING?' disabled':'')+'>'+t('ai_plan_btn')+'</button></div>';
+}
+function rmDraw(){
+  var c=document.getElementById('rmp');if(!c)return;
+  var svg=c.querySelector('.rm-svg'),r=c.getBoundingClientRect(),ns=[].slice.call(c.querySelectorAll('.rn .node'));
+  if(!ns.length)return;
+  var pts=ns.map(function(n){var b=n.getBoundingClientRect();return [b.left+b.width/2-r.left,b.top+b.height/2-r.top]});
+  svg.setAttribute('width',r.width);svg.setAttribute('height',r.height);svg.setAttribute('viewBox','0 0 '+r.width+' '+r.height);
+  function d(a){var s='M'+a[0][0]+' '+a[0][1];for(var i=1;i<a.length;i++){var p=a[i-1],q=a[i],m=(q[1]-p[1])/2;s+=' C'+p[0]+' '+(p[1]+m)+' '+q[0]+' '+(q[1]-m)+' '+q[0]+' '+q[1]}return s}
+  var cur=ns.findIndex(function(n){return n.parentNode.classList.contains('cur')});
+  var lastDone=-1;ns.forEach(function(n,i){if(n.parentNode.classList.contains('done'))lastDone=i});
+  var upto=cur>=0?cur:lastDone;
+  svg.querySelector('.trk').setAttribute('d',d(pts));
+  svg.querySelector('.pr').setAttribute('d',upto>0?d(pts.slice(0,upto+1)):'');
+}
+var RM_RS=false;
 function roadmap(){
   var head='<div class="ph"><div><h1>'+t('nav_roadmap')+'</h1><p>'+t('rm_p')+'</p></div></div>';
   if(!S.diag)return content(head+'<div class="card"><h3>'+ic('target')+t('dx_banner_h')+'</h3><div class="sub">'+t('rm_need_diag')+'</div><a class="btn green" style="margin-top:14px" href="#diagnostic">'+t('dx_go')+'</a></div>');
-  return content(head+'<div class="g2 rm"><div class="stack">'+planCard()+misCard()+'</div><div class="stack">'+levelCard()+topicsCard()+'</div></div>');
+  var st=rmSteps(),cur=st.findIndex(function(x){return !x.done});
+  if(!RM_RS){RM_RS=true;var tm;window.addEventListener('resize',function(){clearTimeout(tm);tm=setTimeout(rmDraw,80)})}
+  setTimeout(rmDraw,0);setTimeout(rmDraw,400);
+  return content(head+rmHero(st,cur)+'<div class="g2 rm"><div class="stack"><div class="card rm-card">'+rmAiBar()+rmPath(st,cur)+'</div>'+misCard()+'</div><div class="stack">'+levelCard()+topicsCard()+'</div></div>');
 }
 
 /* AI: rebuilds the roadmap and adjusts the level from the student's current state */
@@ -2608,7 +2757,7 @@ function typeset(el){
   try{renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code','option','input','select']})}catch(e){}
 }
 window.__katexReady=function(){typeset(root)};
-function render(keepScroll){renderView(keepScroll);typeset(root)}
+function render(keepScroll){renderView(keepScroll);typeset(root);if(ROUTE==='roadmap')rmDraw()}
 function renderView(keepScroll){
   var h=ROUTE;var out;
   var y=window.scrollY;
