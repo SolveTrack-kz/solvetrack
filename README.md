@@ -2,7 +2,7 @@
 
 Платформа подготовки к олимпиадам по физике: пробный экзамен, рейтинг и дивизионы, недельные контесты, задачи с AI-ментором (hint-first), дорожная карта.
 
-Сайт: https://tolegenislambek022-hash.github.io/solvetrack/
+Сайт: https://solvetrack-kz.github.io/solvetrack/
 
 ## Устройство
 
@@ -19,8 +19,8 @@
 
 1. **SQL Editor → New query** → вставить `supabase/schema.sql` → **Run**.
 2. **Authentication → URL Configuration**:
-   - Site URL: `https://tolegenislambek022-hash.github.io/solvetrack/`
-   - Redirect URLs: `https://tolegenislambek022-hash.github.io/solvetrack/**`
+   - Site URL: `https://solvetrack-kz.github.io/solvetrack/`
+   - Redirect URLs: `https://solvetrack-kz.github.io/solvetrack/**`
 3. **Edge Functions → Deploy a new function → Via Editor**, имя `groq`, вставить `supabase/functions/groq/index.ts`, выключить **Verify JWT** (проверка входа сделана внутри функции), **Deploy**.
 4. **Edge Functions → Secrets**: `GEMINI_API_KEY` = ключ из aistudio.google.com; по желанию `GROQ_API_KEY` = ключ с console.groq.com (запасной ИИ).
 5. Почта: встроенная почта Supabase отправляет письма только участникам команды проекта. Для учеников подключить свой SMTP (**Authentication → Emails → SMTP Settings**) или временно выключить подтверждение почты (**Authentication → Sign In / Providers → Email → Confirm email**).
