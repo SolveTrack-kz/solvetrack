@@ -598,7 +598,7 @@ diag_cap:'Схема к задаче: кольцо катится без про�
 your_sol:'Твоё решение',sol_ph:'Запиши ход решения: какие законы используешь, какие уравнения составляешь, что получилось.',
 sol_note:'Оценка предварительная: сверяет запись с ключевыми идеями задачи. Писать можно на любом из трёх языков. Формулы можно писать в LaTeX: $v = \\dfrac{s}{t}$.',
 submit:'Отправить решение',tries:'Попытки',ai_h:'AI-помощник',
-ai_note:'Настоящий ИИ (Groq). Видит условие задачи и твоё последнее решение. Даёт по одной подсказке, но не решает за тебя.',
+ai_note:'Настоящий ИИ (Gemini). Видит условие задачи и твоё последнее решение. Даёт по одной подсказке, но не решает за тебя.',
 ask_ph:'Спроси про эту задачу...',ask_aria:'Вопрос ИИ',hint:'Подсказка',send:'Отправить',
 ai_hello:'Привет! Расскажи, как ты собираешься решать задачу, или нажми «Подсказка». Готовое решение я не дам, но помогу дойти до него самому.',
 me_hint:'Дай подсказку',
@@ -613,11 +613,11 @@ ai_thinking:'Думаю…',
 clear_chat:'Очистить чат',
 e_prefix:'Ошибка ИИ: ',
 e_net:'не удалось связаться с Groq. Проверь интернет. Если интернет есть, значит браузер заблокировал прямой запрос (CORS). Тогда нужен посредник: впиши его адрес в профиле, в карточке «AI-ментор».',
-e_timeout:'Groq не ответил за 30 секунд. Попробуй ещё раз.',
+e_timeout:'ИИ не ответил вовремя. Попробуй ещё раз.',
 e_empty:'модель вернула пустой ответ. Попробуй ещё раз.',
-e_401:'ключ Groq не подошёл (401). Укажи рабочий ключ в профиле, в карточке «AI-ментор».',
-e_429:'слишком много запросов к Groq (429). Подожди минуту и попробуй снова.',
-ai_set_h:'AI-ментор (Groq)',
+e_401:'сервер ИИ отклонил ключ (401). Сообщи администратору сайта.',
+e_429:'слишком много запросов к ИИ (429). Подожди минуту и попробуй снова.',
+ai_set_h:'AI-ментор',
 ai_set_s:'Ключ Groq API. Если поле пустое, используется ключ, встроенный в файл.',
 ai_model:'Модель: {0}',
 ai_model_none:'модель выберется при первом запросе',
@@ -697,7 +697,7 @@ diag_cap:'Есептің сызбасы: сақина $\\theta = 30^\\circ$ бұ
 your_sol:'Сенің шешімің',sol_ph:'Шешу барысын жаз: қандай заңдарды қолданасың, қандай теңдеулер құрасың, не шықты.',
 sol_note:'Баға алдын ала қойылады: жазбаны есептің негізгі идеяларымен салыстырады. Үш тілдің кез келгенінде жазуға болады. Формулаларды LaTeX-пен жазуға болады: $v = \\dfrac{s}{t}$.',
 submit:'Шешімді жіберу',tries:'Әрекеттер',ai_h:'AI-көмекші',
-ai_note:'Нағыз ЖИ (Groq). Есептің шартын және соңғы шешіміңді көреді. Кеңесті бір-бірден береді, бірақ сен үшін шешпейді.',
+ai_note:'Нағыз ЖИ (Gemini). Есептің шартын және соңғы шешіміңді көреді. Кеңесті бір-бірден береді, бірақ сен үшін шешпейді.',
 ask_ph:'Осы есеп туралы сұра...',ask_aria:'ЖИ-ге сұрақ',hint:'Кеңес',send:'Жіберу',
 ai_hello:'Сәлем! Есепті қалай шешпек екеніңді айт немесе «Кеңес» батырмасын бас. Дайын шешімді бермеймін, бірақ оған өзің жетуге көмектесемін.',
 me_hint:'Кеңес бер',
@@ -712,11 +712,11 @@ ai_thinking:'Ойланып жатырмын…',
 clear_chat:'Чатты тазалау',
 e_prefix:'ЖИ қатесі: ',
 e_net:'Groq-қа қосылу мүмкін болмады. Интернетті тексер. Интернет болса, браузер тікелей сұранысты бұғаттаған (CORS). Онда делдал керек: оның мекенжайын профильдегі «AI-тәлімгер» карточкасына жаз.',
-e_timeout:'Groq 30 секунд ішінде жауап бермеді. Қайта көр.',
+e_timeout:'ЖИ уақытында жауап бермеді. Қайта көр.',
 e_empty:'модель бос жауап қайтарды. Қайта көр.',
-e_401:'Groq кілті жарамсыз (401). Профильдегі «AI-тәлімгер» карточкасында жұмыс істейтін кілтті көрсет.',
-e_429:'Groq-қа сұраныс тым көп (429). Бір минут күтіп, қайта көр.',
-ai_set_h:'AI-тәлімгер (Groq)',
+e_401:'ЖИ сервері кілтті қабылдамады (401). Сайт әкімшісіне хабарла.',
+e_429:'ЖИ-ге сұраныс тым көп (429). Бір минут күтіп, қайта көр.',
+ai_set_h:'AI-тәлімгер',
 ai_set_s:'Groq API кілті. Өріс бос болса, файлға енгізілген кілт қолданылады.',
 ai_model:'Модель: {0}',
 ai_model_none:'модель алғашқы сұраныста таңдалады',
@@ -796,7 +796,7 @@ diag_cap:'Diagram: a ring rolls without slipping down a plane inclined at $\\the
 your_sol:'Your solution',sol_ph:'Write out your reasoning: which laws you use, which equations you set up, and what you get.',
 sol_note:'Preliminary score: checks your write-up against the problem’s key ideas. You can write in any of the three languages. You can write formulas in LaTeX: $v = \\dfrac{s}{t}$.',
 submit:'Submit solution',tries:'Attempts',ai_h:'AI assistant',
-ai_note:'Real AI (Groq). It sees the problem statement and your latest solution. It gives one hint at a time but won’t solve it for you.',
+ai_note:'Real AI (Gemini). It sees the problem statement and your latest solution. It gives one hint at a time but won’t solve it for you.',
 ask_ph:'Ask about this problem...',ask_aria:'Question for the AI',hint:'Hint',send:'Send',
 ai_hello:'Hi! Tell me how you plan to solve the problem, or press “Hint”. I won’t give you the finished solution, but I’ll help you get there yourself.',
 me_hint:'Give me a hint',
@@ -811,11 +811,11 @@ ai_thinking:'Thinking…',
 clear_chat:'Clear chat',
 e_prefix:'AI error: ',
 e_net:'could not reach Groq. Check your internet connection. If it works, the browser blocked the direct request (CORS). Then you need a proxy: enter its address in your profile, in the “AI mentor” card.',
-e_timeout:'Groq did not respond within 30 seconds. Try again.',
+e_timeout:'The AI did not respond in time. Try again.',
 e_empty:'the model returned an empty reply. Try again.',
-e_401:'the Groq key was rejected (401). Enter a working key in your profile, in the “AI mentor” card.',
-e_429:'too many requests to Groq (429). Wait a minute and try again.',
-ai_set_h:'AI mentor (Groq)',
+e_401:'the AI server rejected its key (401). Tell the site admin.',
+e_429:'too many requests to the AI (429). Wait a minute and try again.',
+ai_set_h:'AI mentor',
 ai_set_s:'Groq API key. If empty, the key built into the file is used.',
 ai_model:'Model: {0}',
 ai_model_none:'chosen on the first request',
@@ -834,7 +834,7 @@ t_proxy_bad:'The address must start with https://'
 var LANG='ru';
 /* ---------- i18n: accounts, entry test, roadmap ---------- */
 Object.assign(L.ru,{
-cl_note:'Прогресс сохраняется в облаке: можно входить с телефона и компьютера.',cl_check_h:'Проверь почту',cl_check_p:'Мы отправили письмо на <b>{0}</b>. Открой его и нажми ссылку, чтобы подтвердить адрес. После этого войди.',cl_check_r1:'Письмо может прийти через пару минут. Загляни в папку «Спам».',cl_check_r2:'Ссылку можно открыть на любом устройстве.',cl_resend:'Отправить письмо ещё раз',cl_resent:'Письмо отправлено ещё раз',cl_confirmed:'Почта подтверждена. Добро пожаловать!',cl_confirmed_login:'Почта подтверждена. Теперь войди.',cl_not_confirmed:'Почта ещё не подтверждена. Найди письмо от SolveTrack и нажми ссылку в нём.',cl_mail_blocked:'Сервер пока не может отправлять письма на этот адрес. Сообщи учителю или администратору сайта.',cl_rate:'Слишком много попыток. Подожди немного и попробуй снова.',cl_net:'Нет связи с сервером. Проверь интернет.',cl_forgot_link:'Забыл пароль?',cl_forgot_h:'Восстановление пароля',cl_forgot_p:'Укажи почту, с которой регистрировался. Мы пришлём ссылку для нового пароля.',cl_forgot_btn:'Прислать ссылку',cl_forgot_sent:'Ссылка для нового пароля отправлена на {0}.',cl_new_h:'Новый пароль',cl_pass_ok:'Пароль изменён',cl_off_h:'Нет связи с сервером',cl_off_p:'Не удалось загрузить модуль входа. Проверь интернет и обнови страницу.',cl_sync_err:'Не удалось сохранить в облако. Прогресс сохранён на этом устройстве, повторим позже.',cl_all:'Все',cl_ai_s:'ИИ работает через сервер SolveTrack: ключи хранить в браузере не нужно.',cl_fn_missing:'ИИ на сервере ещё не подключён (нет функции groq).',cl_fn_nokey:'На сервере не задан ключ Groq (секрет GROQ_API_KEY).',cl_relogin:'Сессия истекла. Выйди и войди снова.',
+cl_note:'Прогресс сохраняется в облаке: можно входить с телефона и компьютера.',cl_check_h:'Проверь почту',cl_check_p:'Мы отправили письмо на <b>{0}</b>. Открой его и нажми ссылку, чтобы подтвердить адрес. После этого войди.',cl_check_r1:'Письмо может прийти через пару минут. Загляни в папку «Спам».',cl_check_r2:'Ссылку можно открыть на любом устройстве.',cl_resend:'Отправить письмо ещё раз',cl_resent:'Письмо отправлено ещё раз',cl_confirmed:'Почта подтверждена. Добро пожаловать!',cl_confirmed_login:'Почта подтверждена. Теперь войди.',cl_not_confirmed:'Почта ещё не подтверждена. Найди письмо от SolveTrack и нажми ссылку в нём.',cl_mail_blocked:'Сервер пока не может отправлять письма на этот адрес. Сообщи учителю или администратору сайта.',cl_rate:'Слишком много попыток. Подожди немного и попробуй снова.',cl_net:'Нет связи с сервером. Проверь интернет.',cl_forgot_link:'Забыл пароль?',cl_forgot_h:'Восстановление пароля',cl_forgot_p:'Укажи почту, с которой регистрировался. Мы пришлём ссылку для нового пароля.',cl_forgot_btn:'Прислать ссылку',cl_forgot_sent:'Ссылка для нового пароля отправлена на {0}.',cl_new_h:'Новый пароль',cl_pass_ok:'Пароль изменён',cl_off_h:'Нет связи с сервером',cl_off_p:'Не удалось загрузить модуль входа. Проверь интернет и обнови страницу.',cl_sync_err:'Не удалось сохранить в облако. Прогресс сохранён на этом устройстве, повторим позже.',cl_all:'Все',cl_ai_s:'ИИ работает через сервер SolveTrack: ключи хранить в браузере не нужно.',cl_fn_missing:'ИИ на сервере ещё не подключён (нет функции groq).',cl_fn_nokey:'На сервере не задан ключ ИИ (секрет GEMINI_API_KEY).',cl_relogin:'Сессия истекла. Выйди и войди снова.',
 dx_new_h:'В тесте появились новые вопросы',dx_new_p:'Добавлено {0} вопросов по динамике, законам сохранения, статике, колебаниям, газам, электростатике, магнетизму, индукции и оптике. Пройди тест заново, чтобы ИИ знал твои слабые места и в этих темах.',
 more_h:'Где ещё порешать',more_p:'Задачи на сайте составлены специально для SolveTrack. Оригинальные олимпиадные задачи с решениями — здесь:',more_mathus:'Материалы И. В. Яковлева: задачи олимпиад по классам и темам',more_phors:'Задачи олимпиад по физике',
 dx_meta_q:'{0} вопросов',dx_meta_t:'≈ 13 минут',dx_meta_g:'Без оценок',dx_how:'Как отвечать',dx_how1:'Выбери ответ. Если тема незнакома — жми «Не знаю», это лучше, чем угадывать.',dx_how2:'Отметь, насколько уверен. Так мы отличим заблуждение от простого пробела.',dx_keys:'Можно отвечать с клавиатуры: 1–5 — выбор, Enter — дальше, ← — назад',dx_type_st:'Утверждение',dx_type_pr:'Задача',dx_calc:'Считаем результаты…',
@@ -878,7 +878,7 @@ rm_mis_h:'Разобрать: {0}',rm_mis_p:'Прочитай разбор и о
 rm_need_diag:'Дорожная карта строится по входному тесту. Пройди его, это около 13 минут.'
 });
 Object.assign(L.kk,{
-cl_note:'Прогресс бұлтта сақталады: телефоннан да, компьютерден де кіруге болады.',cl_check_h:'Поштаңды тексер',cl_check_p:'Біз <b>{0}</b> мекенжайына хат жібердік. Мекенжайды растау үшін оны ашып, сілтемені бас. Содан кейін кір.',cl_check_r1:'Хат бірнеше минуттан кейін келуі мүмкін. «Спам» қалтасын да қара.',cl_check_r2:'Сілтемені кез келген құрылғыда ашуға болады.',cl_resend:'Хатты қайта жіберу',cl_resent:'Хат қайта жіберілді',cl_confirmed:'Пошта расталды. Қош келдің!',cl_confirmed_login:'Пошта расталды. Енді кір.',cl_not_confirmed:'Пошта әлі расталмаған. SolveTrack-тен келген хатты тауып, ондағы сілтемені бас.',cl_mail_blocked:'Сервер әзірге бұл мекенжайға хат жібере алмайды. Мұғалімге немесе сайт әкімшісіне хабарла.',cl_rate:'Әрекет тым көп. Біраз күтіп, қайта көр.',cl_net:'Сервермен байланыс жоқ. Интернетті тексер.',cl_forgot_link:'Құпиясөзді ұмыттың ба?',cl_forgot_h:'Құпиясөзді қалпына келтіру',cl_forgot_p:'Тіркелген поштаңды көрсет. Жаңа құпиясөзге сілтеме жібереміз.',cl_forgot_btn:'Сілтеме жіберу',cl_forgot_sent:'Жаңа құпиясөзге сілтеме {0} мекенжайына жіберілді.',cl_new_h:'Жаңа құпиясөз',cl_pass_ok:'Құпиясөз өзгертілді',cl_off_h:'Сервермен байланыс жоқ',cl_off_p:'Кіру модулін жүктеу мүмкін болмады. Интернетті тексеріп, бетті жаңарт.',cl_sync_err:'Бұлтқа сақтау мүмкін болмады. Прогресс осы құрылғыда сақталды, кейін қайталаймыз.',cl_all:'Барлығы',cl_ai_s:'ЖИ SolveTrack сервері арқылы жұмыс істейді: браузерде кілт сақтаудың қажеті жоқ.',cl_fn_missing:'Серверде ЖИ әлі қосылмаған (groq функциясы жоқ).',cl_fn_nokey:'Серверде Groq кілті көрсетілмеген (GROQ_API_KEY құпиясы).',cl_relogin:'Сессия аяқталды. Шығып, қайта кір.',
+cl_note:'Прогресс бұлтта сақталады: телефоннан да, компьютерден де кіруге болады.',cl_check_h:'Поштаңды тексер',cl_check_p:'Біз <b>{0}</b> мекенжайына хат жібердік. Мекенжайды растау үшін оны ашып, сілтемені бас. Содан кейін кір.',cl_check_r1:'Хат бірнеше минуттан кейін келуі мүмкін. «Спам» қалтасын да қара.',cl_check_r2:'Сілтемені кез келген құрылғыда ашуға болады.',cl_resend:'Хатты қайта жіберу',cl_resent:'Хат қайта жіберілді',cl_confirmed:'Пошта расталды. Қош келдің!',cl_confirmed_login:'Пошта расталды. Енді кір.',cl_not_confirmed:'Пошта әлі расталмаған. SolveTrack-тен келген хатты тауып, ондағы сілтемені бас.',cl_mail_blocked:'Сервер әзірге бұл мекенжайға хат жібере алмайды. Мұғалімге немесе сайт әкімшісіне хабарла.',cl_rate:'Әрекет тым көп. Біраз күтіп, қайта көр.',cl_net:'Сервермен байланыс жоқ. Интернетті тексер.',cl_forgot_link:'Құпиясөзді ұмыттың ба?',cl_forgot_h:'Құпиясөзді қалпына келтіру',cl_forgot_p:'Тіркелген поштаңды көрсет. Жаңа құпиясөзге сілтеме жібереміз.',cl_forgot_btn:'Сілтеме жіберу',cl_forgot_sent:'Жаңа құпиясөзге сілтеме {0} мекенжайына жіберілді.',cl_new_h:'Жаңа құпиясөз',cl_pass_ok:'Құпиясөз өзгертілді',cl_off_h:'Сервермен байланыс жоқ',cl_off_p:'Кіру модулін жүктеу мүмкін болмады. Интернетті тексеріп, бетті жаңарт.',cl_sync_err:'Бұлтқа сақтау мүмкін болмады. Прогресс осы құрылғыда сақталды, кейін қайталаймыз.',cl_all:'Барлығы',cl_ai_s:'ЖИ SolveTrack сервері арқылы жұмыс істейді: браузерде кілт сақтаудың қажеті жоқ.',cl_fn_missing:'Серверде ЖИ әлі қосылмаған (groq функциясы жоқ).',cl_fn_nokey:'Серверде ЖИ кілті көрсетілмеген (GEMINI_API_KEY құпиясы).',cl_relogin:'Сессия аяқталды. Шығып, қайта кір.',
 dx_new_h:'Тестке жаңа сұрақтар қосылды',dx_new_p:'Динамика, сақталу заңдары, статика, тербелістер, газдар, электростатика, магнетизм, индукция және оптика бойынша {0} сұрақ қосылды. ЖИ осы тақырыптардағы әлсіз жақтарыңды да білуі үшін тестті қайта өт.',
 more_h:'Тағы қайда шешуге болады',more_p:'Сайттағы есептер SolveTrack үшін арнайы құрастырылған. Шешімдері бар түпнұсқа олимпиада есептері — мына жерде:',more_mathus:'И. В. Яковлевтің материалдары: сыныптар мен тақырыптар бойынша олимпиада есептері',more_phors:'Физикадан олимпиада есептері',
 dx_meta_q:'{0} сұрақ',dx_meta_t:'≈ 13 минут',dx_meta_g:'Баға қойылмайды',dx_how:'Қалай жауап беру керек',dx_how1:'Жауапты таңда. Тақырып таныс болмаса, «Білмеймін» деп бас — бұл болжағаннан жақсы.',dx_how2:'Қаншалықты сенімді екеніңді белгіле. Осылай қате түсінікті жай олқылықтан ажыратамыз.',dx_keys:'Пернетақтамен жауап беруге болады: 1–5 — таңдау, Enter — келесі, ← — артқа',dx_type_st:'Тұжырым',dx_type_pr:'Есеп',dx_calc:'Нәтижелерді есептеп жатырмыз…',
@@ -922,7 +922,7 @@ rm_mis_h:'Талдау: {0}',rm_mis_p:'Талдауды оқып, тексеру
 rm_need_diag:'Жол картасы кіріс тесті бойынша құрылады. Одан өт, бұл шамамен 13 минут.'
 });
 Object.assign(L.en,{
-cl_note:'Your progress is saved in the cloud: sign in from your phone or computer.',cl_check_h:'Check your email',cl_check_p:'We sent an email to <b>{0}</b>. Open it and click the link to confirm your address. Then sign in.',cl_check_r1:'The email may take a couple of minutes. Check your spam folder.',cl_check_r2:'You can open the link on any device.',cl_resend:'Resend the email',cl_resent:'Email sent again',cl_confirmed:'Email confirmed. Welcome!',cl_confirmed_login:'Email confirmed. Now sign in.',cl_not_confirmed:'Your email isn’t confirmed yet. Find the email from SolveTrack and click the link.',cl_mail_blocked:'The server can’t send emails to this address yet. Tell your teacher or the site admin.',cl_rate:'Too many attempts. Wait a little and try again.',cl_net:'No connection to the server. Check your internet.',cl_forgot_link:'Forgot your password?',cl_forgot_h:'Reset password',cl_forgot_p:'Enter the email you signed up with. We’ll send a link to set a new password.',cl_forgot_btn:'Send link',cl_forgot_sent:'A password reset link was sent to {0}.',cl_new_h:'New password',cl_pass_ok:'Password changed',cl_off_h:'No connection to the server',cl_off_p:'The sign-in module could not load. Check your internet and reload the page.',cl_sync_err:'Couldn’t save to the cloud. Progress is saved on this device; we’ll retry later.',cl_all:'All',cl_ai_s:'The AI runs through the SolveTrack server: no keys are stored in your browser.',cl_fn_missing:'The AI isn’t connected on the server yet (no groq function).',cl_fn_nokey:'The Groq key isn’t set on the server (GROQ_API_KEY secret).',cl_relogin:'Your session expired. Sign out and sign in again.',
+cl_note:'Your progress is saved in the cloud: sign in from your phone or computer.',cl_check_h:'Check your email',cl_check_p:'We sent an email to <b>{0}</b>. Open it and click the link to confirm your address. Then sign in.',cl_check_r1:'The email may take a couple of minutes. Check your spam folder.',cl_check_r2:'You can open the link on any device.',cl_resend:'Resend the email',cl_resent:'Email sent again',cl_confirmed:'Email confirmed. Welcome!',cl_confirmed_login:'Email confirmed. Now sign in.',cl_not_confirmed:'Your email isn’t confirmed yet. Find the email from SolveTrack and click the link.',cl_mail_blocked:'The server can’t send emails to this address yet. Tell your teacher or the site admin.',cl_rate:'Too many attempts. Wait a little and try again.',cl_net:'No connection to the server. Check your internet.',cl_forgot_link:'Forgot your password?',cl_forgot_h:'Reset password',cl_forgot_p:'Enter the email you signed up with. We’ll send a link to set a new password.',cl_forgot_btn:'Send link',cl_forgot_sent:'A password reset link was sent to {0}.',cl_new_h:'New password',cl_pass_ok:'Password changed',cl_off_h:'No connection to the server',cl_off_p:'The sign-in module could not load. Check your internet and reload the page.',cl_sync_err:'Couldn’t save to the cloud. Progress is saved on this device; we’ll retry later.',cl_all:'All',cl_ai_s:'The AI runs through the SolveTrack server: no keys are stored in your browser.',cl_fn_missing:'The AI isn’t connected on the server yet (no groq function).',cl_fn_nokey:'The AI key isn’t set on the server (GEMINI_API_KEY secret).',cl_relogin:'Your session expired. Sign out and sign in again.',
 dx_new_h:'The test has new questions',dx_new_p:'{0} questions were added on dynamics, conservation laws, statics, oscillations, gases, electrostatics, magnetism, induction and optics. Retake the test so the AI knows your weak spots in these topics too.',
 more_h:'More problems',more_p:'The problems on this site were written specifically for SolveTrack. Original olympiad problems with solutions are here:',more_mathus:'I. V. Yakovlev’s materials: olympiad problems by grade and topic (in Russian)',more_phors:'Physics olympiad problems',
 dx_meta_q:'{0} questions',dx_meta_t:'≈ 13 minutes',dx_meta_g:'Not graded',dx_how:'How to answer',dx_how1:'Pick an answer. If the topic is new to you, press “I don’t know” — it beats guessing.',dx_how2:'Mark how sure you are. That’s how we tell a misconception from a simple gap.',dx_keys:'Keyboard works too: 1–5 to choose, Enter for next, ← to go back',dx_type_st:'Statement',dx_type_pr:'Problem',dx_calc:'Calculating your results…',
@@ -1980,8 +1980,8 @@ function chatHtml(pid){
 var GROQ={
   url:'https://api.groq.com/openai/v1/chat/completions',
   proxy:SB_URL+'/functions/v1/groq', // ключ Groq хранится в Supabase (секрет GROQ_API_KEY), в файле его нет
-  vision:['qwen/qwen3.8-27b','meta-models/muse-spark-open'], // модели, которые читают фото решений
-  models:['llama-3.3-70b-versatile','openai/gpt-oss-120b'] // если первая модель отключена, берётся следующая
+  vision:['gemini-3.8-flash','gemini-3.6-flash','qwen/qwen3.8-27b'], // модели, которые читают фото решений
+  models:['gemini-3.8-flash','gemini-3.6-flash','openai/gpt-oss-120b'] // основная — Gemini, запасная — Groq
 };
 var SYS_PROMPT='Ты — персональный AI-ментор по олимпиадной физике на платформе SolveTrack. Твоя методика — \'сначала подсказка\' (hint-first). Тебе СТРОГО ЗАПРЕЩЕНО выдавать готовое решение задачи, финальный ответ или полную цепочку формул сразу, даже если ученик прямо просит \'скажи ответ\' или \'реши за меня\'. Твоя задача — проверять ход мыслей ученика, находить концептуальные ошибки и давать только ОДНУ короткую наводящую подсказку или вопрос для следующего шага. Отвечай на языке пользователя.';
 var PENDING={};
@@ -2002,44 +2002,50 @@ function systemMessage(p){
 function groqBody(model,messages,opts){
   opts=opts||{};
   var b={model:model,messages:messages,temperature:opts.json?0.2:0.4,max_completion_tokens:opts.max||700};
-  if(opts.json&&!opts.noFormat)b.response_format={type:'json_object'};
+  if(opts.json&&!opts.noFormat&&!/^gemini/.test(model))b.response_format={type:'json_object'};
   if(/gpt-oss/.test(model)){b.reasoning_effort='low';b.max_completion_tokens=1500}
+  if(/^gemini/.test(model)){b.reasoning_effort='low';b.max_completion_tokens=Math.max(2000,opts.max||0)}
   return b;
 }
+/* Порядок моделей: сначала Gemini, при недоступности — запасная модель Groq.
+   Модель, которую провайдер отключил, запоминается и больше не пробуется. */
 function groqCall(messages,opts){
   var custom=opts&&opts.models;
-  var order=(custom||GROQ.models).slice();
-  if(!custom&&G.groqModel&&order.indexOf(G.groqModel)>0){order.splice(order.indexOf(G.groqModel),1);order.unshift(G.groqModel)}
+  G.gone=G.gone||{};
+  var all=(custom||GROQ.models).slice(),order=all.filter(function(m){return !G.gone[m]});
+  if(!order.length)order=all;
   var i=0;
   function attempt(){
     var model=order[i];
     var ctl=window.AbortController?new AbortController():null;
-    var timer=setTimeout(function(){if(ctl)ctl.abort()},(opts&&opts.timeout)||30000);
-    var proxy=GROQ.proxy;
+    var timer=setTimeout(function(){if(ctl)ctl.abort()},(opts&&opts.timeout)||45000);
     var hdr={'Content-Type':'application/json',Authorization:'Bearer '+accessToken(),apikey:SB_KEY};
-    return fetch(proxy,{method:'POST',headers:hdr,body:JSON.stringify(groqBody(model,messages,opts)),signal:ctl?ctl.signal:undefined})
-    .then(function(r){clearTimeout(timer);return r.text().then(function(txt){var j=null;try{j=JSON.parse(txt)}catch(e){}return {r:r,j:j,txt:txt}})},
+    return fetch(GROQ.proxy,{method:'POST',headers:hdr,body:JSON.stringify(groqBody(model,messages,opts)),signal:ctl?ctl.signal:undefined})
+    .then(function(r){clearTimeout(timer);return r.text().then(function(txt){var j=null;try{j=JSON.parse(txt)}catch(e){}if(Array.isArray(j))j=j[0];return {r:r,j:j,txt:txt}})},
           function(e){clearTimeout(timer);
-      if(e&&e.name==='AbortError')throw new Error(t('e_timeout'));
+      if(e&&e.name==='AbortError'){if(i<order.length-1){i++;return attempt().then(function(x){return {done:x}})}throw new Error(t('e_timeout'))}
       var inFrame=false;try{inFrame=window.self!==window.top}catch(x){inFrame=true}
       throw new Error((inFrame?t('e_frame'):t('e_proxy'))+' ['+(e&&e.message||e)+']')})
     .then(function(res){
+      if(res.done!==undefined)return res.done;
       if(res.r.ok){
         var m=res.j&&res.j.choices&&res.j.choices[0]&&res.j.choices[0].message;
         var out=m&&m.content?String(m.content).trim():'';
-        if(!out)throw new Error(t('e_empty'));
-        if(!custom&&G.groqModel!==model){G.groqModel=model;save()}
+        if(!out){if(i<order.length-1){i++;return attempt()}throw new Error(t('e_empty'))}
+        if(G.groqModel!==model&&!custom){G.groqModel=model;save()}
         return out;
       }
-      var err=(res.j&&res.j.error)||{};var msg=err.message||res.txt||('HTTP '+res.r.status);
-      var gone=res.r.status===404||err.code==='model_not_found'||err.code==='model_decommissioned'||/decommission|does not exist|not found/i.test(msg);
-      if(gone&&i<order.length-1){i++;return attempt()}
-      if(res.r.status===404&&/function/i.test(msg))throw new Error(t('cl_fn_missing'));
-      if(res.r.status===500&&/GROQ_API_KEY/.test(msg))throw new Error(t('cl_fn_nokey'));
-      if(res.r.status===401&&/auth_required|sign in/i.test(msg))throw new Error(t('cl_relogin'));
-      if(res.r.status===401)throw new Error(t('e_401'));
-      if(res.r.status===429)throw new Error(t('e_429'));
-      throw new Error(res.r.status+' — '+msg);
+      var err=(res.j&&res.j.error)||{};var msg=String(err.message||res.txt||('HTTP '+res.r.status));var st=res.r.status;
+      if(st===404&&/requested function|function.*not found/i.test(msg))throw new Error(t('cl_fn_missing'));
+      if(st===401&&/auth_required|sign in/i.test(msg))throw new Error(t('cl_relogin'));
+      var gone=st===404||err.code==='model_not_found'||err.code==='model_decommissioned'||/decommission|does not exist|not found|no longer available/i.test(msg);
+      if(gone)G.gone[model]=1;
+      var retry=gone||st===429||st>=500||/_API_KEY/.test(msg)||st===400&&/location|region|not supported/i.test(msg);
+      if(retry&&i<order.length-1){i++;return attempt()}
+      if(/_API_KEY/.test(msg))throw new Error(t('cl_fn_nokey'));
+      if(st===401||st===403)throw new Error(t('e_401'));
+      if(st===429)throw new Error(t('e_429'));
+      throw new Error(st+' — '+msg.slice(0,300));
     });
   }
   return attempt();
