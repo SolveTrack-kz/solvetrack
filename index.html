@@ -505,22 +505,18 @@ details.expl p{font-size:13.5px;line-height:1.6;margin-top:6px}
 /* sidebar: labels slide out on hover (desktop only) */
 .side .lbl{display:none}
 @media (min-width:761px){
-  .side{width:72px;z-index:60;align-items:stretch;padding:14px 16px;overflow:hidden;will-change:width;transition:width .2s cubic-bezier(.3,.7,.2,1) .05s}
-  .side a,.side button.nb,.side .logo-b{width:auto;min-width:40px;display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:0 11px;white-space:nowrap;text-align:left}
+  .shell>.main{grid-column:2}
+  .side{position:fixed;left:0;top:0;bottom:0;height:auto;width:72px;z-index:60;align-items:stretch;padding:14px 16px;overflow:hidden;contain:layout paint;
+    transition:width .2s cubic-bezier(.2,.8,.2,1) .05s,box-shadow .2s ease .05s}
+  .side a,.side button.nb,.side .logo-b{width:auto;min-width:40px;flex:none;display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:0 11px;white-space:nowrap;text-align:left}
   .side .logo-b{height:40px;padding:0 8px;margin-bottom:14px}
   .side .logo-b .i{flex:none;width:22px;height:22px}
   .side a .i,.side button.nb .i{flex:none}
-  .side .lbl{display:inline;font-size:14px;font-weight:500;}
+  .side .lbl{display:inline;font-size:14px;font-weight:500;opacity:0;transition:opacity .12s linear}
   .side .logo-b .lbl{font-size:16px;font-weight:700;letter-spacing:-.01em}
   .side [data-tip]::after{display:none!important}
-}
-@media (min-width:761px){
-  .side:hover,.side:has(:focus-visible){width:236px;box-shadow:6px 0 24px rgba(0,0,0,.3);transition-delay:.1s}
-  
-
-}
-@media (min-width:761px) and (hover:none){
-  .side [data-tip]::after{display:none!important}
+  .side:hover,.side:has(:focus-visible){width:236px;box-shadow:6px 0 24px rgba(0,0,0,.3);transition-delay:.06s}
+  .side:hover .lbl,.side:has(:focus-visible) .lbl{opacity:1;transition:opacity .16s linear .08s}
 }
 </style>
 </head>
