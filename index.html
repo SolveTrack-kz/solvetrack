@@ -2322,8 +2322,8 @@ function chatHtml(pid){
 var GROQ={
   url:'https://api.groq.com/openai/v1/chat/completions',
   proxy:SB_URL+'/functions/v1/groq', // ключ Groq хранится в Supabase (секрет GROQ_API_KEY), в файле его нет
-  vision:['gemini-3.8-flash','gemini-3.6-flash','qwen/qwen3.8-27b'], // модели, которые читают фото решений
-  models:['gemini-3.8-flash','gemini-3.6-flash','openai/gpt-oss-120b'] // основная — Gemini, запасная — Groq
+  vision:['gemini-3.8-flash','gemini-3.6-flash','gemini-3.5-flash-lite','gemini-3.1-flash-lite','qwen/qwen3.8-27b'], // модели, которые читают фото решений
+  models:['gemini-3.8-flash','gemini-3.6-flash','gemini-3.5-flash-lite','gemini-3.1-flash-lite','openai/gpt-oss-120b'] // всё бесплатно: Gemini → Gemini Flash-Lite (больше дневной лимит) → Groq
 };
 var SYS_PROMPT='Ты — персональный AI-ментор по олимпиадной физике на платформе SolveTrack. Твоя методика — \'сначала подсказка\' (hint-first). Тебе СТРОГО ЗАПРЕЩЕНО выдавать готовое решение задачи, финальный ответ или полную цепочку формул сразу, даже если ученик прямо просит \'скажи ответ\' или \'реши за меня\'. Твоя задача — проверять ход мыслей ученика, находить концептуальные ошибки и давать только ОДНУ короткую наводящую подсказку или вопрос для следующего шага. Отвечай на языке пользователя.';
 var PENDING={},STREAM={};
@@ -2366,10 +2366,11 @@ function readSSE(r,onDelta){
     pump();
   });
 }
+var AI_COOL={}; // модель упёрлась в бесплатный лимит — 10 минут сразу идём к следующей
 function groqCall(messages,opts){
   var custom=opts&&opts.models;
   G.gone=G.gone||{};
-  var all=(custom||GROQ.models).slice(),order=all.filter(function(m){return !G.gone[m]});
+  var all=(custom||GROQ.models).slice(),order=all.filter(function(m){return !(G.gone[m]&&Date.now()-G.gone[m]<864e5)&&!(AI_COOL[m]&&Date.now()-AI_COOL[m]<6e5)});
   if(!order.length)order=all;
   var i=0;
   function attempt(){
@@ -2403,7 +2404,7 @@ function groqCall(messages,opts){
       if(st===404&&/requested function|function.*not found/i.test(msg))throw new Error(t('cl_fn_missing'));
       if(st===401&&/auth_required|sign in/i.test(msg))throw new Error(t('cl_relogin'));
       var gone=st===404||err.code==='model_not_found'||err.code==='model_decommissioned'||/decommission|does not exist|not found|no longer available/i.test(msg);
-      if(gone)G.gone[model]=1;
+      if(gone)G.gone[model]=Date.now();if(st===429)AI_COOL[model]=Date.now();
       var retry=gone||st===429||st>=500||/_API_KEY/.test(msg)||st===400&&/location|region|not supported/i.test(msg);
       if(retry&&i<order.length-1){i++;return attempt()}
       if(/_API_KEY/.test(msg))throw new Error(t('cl_fn_nokey'));

@@ -12,7 +12,7 @@ const PROVIDERS = {
   gemini: {
     url: "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
     secret: "GEMINI_API_KEY",
-    models: ["gemini-3.8-flash", "gemini-3.6-flash"],
+    models: ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite"],
   },
   groq: {
     url: "https://api.groq.com/openai/v1/chat/completions",
