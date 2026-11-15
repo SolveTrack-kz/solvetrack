@@ -1670,8 +1670,7 @@ function diagnostic(){
   }
   var last=DX.i===QSEQ.length-1;
   return content('<div class="dx-wrap"><div class="card dx-card" '+(DX.anim?'':'data-noanim')+'>'+top+'<div class="dx-body">'+body+'</div>'+
-  '<div class="dx-nav">'+(DX.i>0?'<button class="btn ghostbtn" data-act="dx-back">'+ic('left')+t('dx_back')+'</button>':'<span></span>')+
-  '<button class="btn '+(last?'green':'blue')+'" data-act="dx-next"'+(ready?'':' disabled')+'>'+t(last?'dx_finish':'dx_next')+(last?'':' '+ic('arrow'))+'</button></div></div></div>');
+  (DX.i>0?'<div class="dx-nav"><button class="btn ghostbtn" data-act="dx-back">'+ic('left')+t('dx_back')+'</button><span></span></div>':'')+'</div></div>');
 }
 function dxComplete(id){var a=DX.ans[id]||{};return mById(id)?(a.v==='idk'||(a.v!=null&&a.c!=null)):a.v!=null}
 function dxGo(step){
