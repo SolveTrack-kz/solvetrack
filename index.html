@@ -493,6 +493,10 @@ details.expl p{font-size:13.5px;line-height:1.6;margin-top:6px}
 .g-btn:hover{border-color:var(--blue)}
 .or{display:flex;align-items:center;gap:12px;margin:18px 0 4px;color:var(--muted);font-size:12.5px}
 .or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* round avatars never squeeze */
+.avatar{flex:none;aspect-ratio:1/1;min-width:0}
+.mentor .avatar{flex:0 0 48px}
 </style>
 </head>
 <body>
@@ -632,7 +636,7 @@ key_clear:'Вернуть встроенный ключ',
 t_key:'Ключ сохранён',
 t_key_clear:'Используется встроенный ключ',
 e_frame:'сайт открыт в окне предпросмотра, а оно не пускает запросы в интернет. Скачай index.html и открой его двойным кликом в Chrome, Edge или Firefox.',
-e_proxy:'не удалось связаться с посредником. Проверь его адрес в профиле.',
+e_proxy:'не удалось связаться с сервером ИИ. Скорее всего, ИИ на сервере ещё не подключён: нет функции groq или в ней включён Verify JWT.',
 proxy_s:'Адрес посредника (необязательно). Нужен, если браузер блокирует прямые запросы к Groq. Ключ тогда хранится у посредника, а не в файле.',
 proxy_save:'Сохранить адрес',
 t_proxy:'Адрес посредника сохранён',
@@ -731,7 +735,7 @@ key_clear:'Енгізілген кілтке қайтару',
 t_key:'Кілт сақталды',
 t_key_clear:'Енгізілген кілт қолданылады',
 e_frame:'сайт алдын ала қарау терезесінде ашылған, ал ол интернетке сұраныс жібермейді. index.html файлын жүктеп алып, Chrome, Edge немесе Firefox-та екі рет басып аш.',
-e_proxy:'делдалға қосылу мүмкін болмады. Профильдегі оның мекенжайын тексер.',
+e_proxy:'ЖИ серверіне қосылу мүмкін болмады. Серверде ЖИ әлі қосылмаған болуы мүмкін: groq функциясы жоқ немесе онда Verify JWT қосулы.',
 proxy_s:'Делдал мекенжайы (міндетті емес). Браузер Groq-қа тікелей сұраныстарды бұғаттаса керек. Бұл жағдайда кілт файлда емес, делдалда сақталады.',
 proxy_save:'Мекенжайды сақтау',
 t_proxy:'Делдал мекенжайы сақталды',
@@ -830,7 +834,7 @@ key_clear:'Use the built-in key',
 t_key:'Key saved',
 t_key_clear:'Using the built-in key',
 e_frame:'the site is open in a preview window, which blocks internet requests. Download index.html and open it by double-clicking in Chrome, Edge or Firefox.',
-e_proxy:'could not reach the proxy. Check its address in your profile.',
+e_proxy:'could not reach the AI server. Most likely the AI isn’t set up on the server yet: the groq function is missing or has Verify JWT turned on.',
 proxy_s:'Proxy address (optional). Needed if the browser blocks direct requests to Groq. The key is then stored on the proxy, not in the file.',
 proxy_save:'Save address',
 t_proxy:'Proxy address saved',
