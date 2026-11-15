@@ -501,6 +501,26 @@ details.expl p{font-size:13.5px;line-height:1.6;margin-top:6px}
 /* streaming answer */
 .st-txt{white-space:pre-wrap}
 .caret{display:inline-block;width:7px;height:14px;margin-left:2px;vertical-align:-2px;background:var(--blue);animation:blink 1s infinite}
+
+/* sidebar: labels slide out on hover (desktop only) */
+.side .lbl{display:none}
+@media (min-width:761px){
+  .side{width:72px;z-index:60;align-items:stretch;padding:14px 16px;overflow:hidden;transition:width .2s ease,box-shadow .2s ease}
+  .side a,.side button.nb,.side .logo-b{width:auto;min-width:40px;display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:0 11px;white-space:nowrap;text-align:left}
+  .side .logo-b{height:40px;padding:0 8px;margin-bottom:14px}
+  .side .logo-b .i{flex:none;width:22px;height:22px}
+  .side a .i,.side button.nb .i{flex:none}
+  .side .lbl{display:inline;font-size:14px;font-weight:500;opacity:0;transform:translateX(-6px);transition:opacity .15s ease,transform .15s ease}
+  .side .logo-b .lbl{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .side [data-tip]::after{display:none!important}
+}
+@media (min-width:761px) and (hover:hover){
+  .side:hover,.side:focus-within{width:236px;box-shadow:8px 0 32px rgba(0,0,0,.35)}
+  .side:hover .lbl,.side:focus-within .lbl{opacity:1;transform:none;transition-delay:.05s}
+}
+@media (min-width:761px) and (hover:none){
+  .side [data-tip]::after{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -1865,9 +1885,9 @@ function sc(c,i,h,p,href){return '<a class="scard" href="'+href+'"><span class="
 
 var NAV=[['dashboard','dash','nav_dashboard'],['mentors','users','nav_mentors'],['roadmap','map','nav_roadmap'],['books','lib','nav_books'],['courses','book','nav_courses'],['olympiads','trophy','nav_olympiads'],['contests','target','nav_contests'],['problems','code','nav_problems']];
 function shell(route,inner,ph){
-  var nav=NAV.map(function(n){var l=t(n[2]);return '<a href="#'+n[0]+'" class="'+(route===n[0]?'on':'')+'" data-tip="'+esc(l)+'" aria-label="'+esc(l)+'">'+ic(n[1])+'</a>'}).join('');
+  var nav=NAV.map(function(n){var l=t(n[2]);return '<a href="#'+n[0]+'" class="'+(route===n[0]?'on':'')+'" data-tip="'+esc(l)+'" aria-label="'+esc(l)+'">'+ic(n[1])+'<span class="lbl">'+esc(l)+'</span></a>'}).join('');
   var dark=isDark();
-  return '<div class="shell"><aside class="side"><a class="logo-b" href="#" aria-label="'+esc(t('home'))+'" style="color:#fff">'+ic('book')+'</a>'+nav+'<div class="sp"></div><button class="nb out" data-act="logout" data-tip="'+esc(t('logout'))+'" aria-label="'+esc(t('logout'))+'">'+ic('out')+'</button></aside>'+
+  return '<div class="shell"><aside class="side"><a class="logo-b" href="#" aria-label="'+esc(t('home'))+'" style="color:#fff">'+ic('book')+'<span class="lbl">SolveTrack</span></a>'+nav+'<div class="sp"></div><button class="nb out" data-act="logout" data-tip="'+esc(t('logout'))+'" aria-label="'+esc(t('logout'))+'">'+ic('out')+'<span class="lbl">'+esc(t('logout'))+'</span></button></aside>'+
   '<div class="main"><header class="top"><form class="search" id="sform">'+ic('search')+'<input id="q" type="search" placeholder="'+esc(t('search_ph'))+'" aria-label="'+esc(t('search'))+'" value="'+esc(ph||'')+'"></form>'+
   '<div class="r"><button class="btn sm" data-act="theme">'+ic(dark?'sun':'moon')+(dark?t('th_light'):t('th_dark'))+'</button><a class="user" href="#profile" aria-label="'+esc(t('profile'))+'"><div class="nm"><b>'+esc(S.profile.name||t('noname'))+'</b><span>'+esc(t('role_'+S.profile.role))+'</span></div><div class="avatar">'+esc(initials())+'</div></a></div></header>'+inner+'</div></div>';
 }
