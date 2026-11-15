@@ -514,9 +514,9 @@ details.expl p{font-size:13.5px;line-height:1.6;margin-top:6px}
   .side .logo-b .lbl{font-size:16px;font-weight:700;letter-spacing:-.01em}
   .side [data-tip]::after{display:none!important}
 }
-@media (min-width:761px) and (hover:hover){
-  .side:hover,.side:focus-within{width:236px;box-shadow:8px 0 32px rgba(0,0,0,.35)}
-  .side:hover .lbl,.side:focus-within .lbl{opacity:1;transform:none;transition-delay:.05s}
+@media (min-width:761px){
+  .side:hover,.side:has(:focus-visible){width:236px;box-shadow:8px 0 32px rgba(0,0,0,.35)}
+  .side:hover .lbl,.side:has(:focus-visible) .lbl{opacity:1;transform:none;transition-delay:.05s}
 }
 @media (min-width:761px) and (hover:none){
   .side [data-tip]::after{display:none!important}
