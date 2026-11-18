@@ -842,8 +842,8 @@ f_goal:'Цель подготовки',f_goal_ph:'Например, респуб
 lang_h:'Язык интерфейса',lang_s:'Меню, задачи и подсказки сразу переключатся на выбранный язык.',
 theme_h:'Тема оформления',theme_now:'Сейчас: {0}.',theme_dark:'тёмная',theme_light:'светлая',theme_toggle:'Переключить тему',
 data_h:'Данные в этом браузере',data_s:'Прогресс, чаты с ИИ и профиль хранятся только здесь.',
-demo:'Загрузить демо-прогресс',reset:'Сбросить прогресс',reset_c:'Нажми ещё раз, чтобы стереть прогресс',
-t_reset:'Прогресс сброшен',t_demo:'Демо-прогресс загружен',t_saved:'Профиль сохранён',t_name:'Введи имя.',
+demo:'Заполнить для показа',reset:'Сбросить прогресс',reset_c:'Нажми ещё раз, чтобы стереть прогресс',
+t_reset:'Прогресс сброшен',t_demo:'Готово: аккаунт заполнен для показа',t_saved:'Профиль сохранён',t_name:'Введи имя.',
 m_p:'Менторы, которые помогут найти ошибку в рассуждениях',m_empty:'Наставников пока нет. Здесь появятся менторы и их темы.',
 m_req:'Запросить консультацию',m_sent:'Заявка отправлена. Отменить',
 m_cap:'Заявка сохраняется только в этом браузере. Отправка менторам появится вместе с серверной частью.',
@@ -941,8 +941,8 @@ f_goal:'Дайындық мақсаты',f_goal_ph:'Мысалы, физикад
 lang_h:'Интерфейс тілі',lang_s:'Мәзір, есептер мен кеңестер таңдалған тілге бірден ауысады.',
 theme_h:'Безендіру тақырыбы',theme_now:'Қазір: {0}.',theme_dark:'қараңғы',theme_light:'жарық',theme_toggle:'Тақырыпты ауыстыру',
 data_h:'Осы браузердегі деректер',data_s:'Прогресс, ЖИ-мен чаттар және профиль тек осында сақталады.',
-demo:'Демо-прогресті жүктеу',reset:'Прогресті тазалау',reset_c:'Прогресті өшіру үшін тағы бір рет бас',
-t_reset:'Прогресс тазаланды',t_demo:'Демо-прогресс жүктелді',t_saved:'Профиль сақталды',t_name:'Атыңды енгіз.',
+demo:'Көрсетуге толтыру',reset:'Прогресті тазалау',reset_c:'Прогресті өшіру үшін тағы бір рет бас',
+t_reset:'Прогресс тазаланды',t_demo:'Дайын: аккаунт көрсетуге толтырылды',t_saved:'Профиль сақталды',t_name:'Атыңды енгіз.',
 m_p:'Пайымдаудағы қатені табуға көмектесетін менторлар',m_empty:'Әзірге тәлімгерлер жоқ. Мұнда менторлар мен олардың тақырыптары пайда болады.',
 m_req:'Кеңес сұрау',m_sent:'Өтінім жіберілді. Бас тарту',
 m_cap:'Өтінім тек осы браузерде сақталады. Менторларға жіберу серверлік бөлік қосылғанда іске қосылады.',
@@ -1040,8 +1040,8 @@ f_goal:'Goal',f_goal_ph:'For example, the national physics olympiad',f_bio:'Abou
 lang_h:'Interface language',lang_s:'Menus, problems and hints switch to the chosen language right away.',
 theme_h:'Theme',theme_now:'Current: {0}.',theme_dark:'dark',theme_light:'light',theme_toggle:'Switch theme',
 data_h:'Data in this browser',data_s:'Progress, AI chats and your profile are stored only here.',
-demo:'Load demo progress',reset:'Reset progress',reset_c:'Click again to erase progress',
-t_reset:'Progress reset',t_demo:'Demo progress loaded',t_saved:'Profile saved',t_name:'Enter your name.',
+demo:'Fill for a demo',reset:'Reset progress',reset_c:'Click again to erase progress',
+t_reset:'Progress reset',t_demo:'Done: account filled for a demo',t_saved:'Profile saved',t_name:'Enter your name.',
 m_p:'Mentors who help you find mistakes in your reasoning',m_empty:'No mentors yet. Mentors and their topics will appear here.',
 m_req:'Request a consultation',m_sent:'Request sent. Cancel',
 m_cap:'Requests are saved only in this browser. Sending them to mentors will come with the server side.',
@@ -1863,6 +1863,47 @@ function doLogout(){
   setTimeout(function(){(sb?sb.auth.signOut():Promise.resolve()).then(done,done)},300);
 }
 
+/* «Заполнить для показа»: правдоподобный прогресс в собственном аккаунте (для стенда/презентации). Помечается S.demo=true. */
+function standDemo(){
+  var now=Date.now(),D=864e5;
+  S.profile=S.profile||{};if(!S.profile.grade)S.profile.grade='10';
+  var mis={};MIS.forEach(function(m,j){mis[m.id]=j%5===1?'mis':(j%7===3?'gap':(j%4===2?'weak':'ok'))});
+  S.diag={done:true,ts:now-24*D,answers:{},mis:mis,lv:{},pts:7,max:10,level:2,demo:true};
+  S.misFix={};var firstMis=MIS.filter(function(m){return mis[m.id]==='mis'})[0];if(firstMis)S.misFix[firstMis.id]=true;
+  S.level=null;S.plan=null;S.planErr=null;
+  S.placement={done:true,ts:now-23*D,log:[],rating:1240,grade:S.profile.grade};
+  S.rating=1240;S.ratingHist=[{ts:now-23*D,r:1240,why:'start'}];
+  var texts=['Ось x направлю вдоль движения. Второй закон Ньютона в проекции: $ma = F - \\mu mg$, отсюда $a = \\dfrac{F}{m} - \\mu g$.',
+    'Закон сохранения энергии: $mgh = \\dfrac{mv^2}{2}$, значит $v = \\sqrt{2gh}$. Сопротивлением воздуха пренебрегаю.',
+    'Сила Архимеда $F_A = \\rho_ж g V$ уравновешивает вес: $\\rho_т V g = \\rho_ж g V_{погр}$, поэтому доля погружения $\\rho_т/\\rho_ж$.',
+    'Сопротивления соединены последовательно: $R = R_1 + R_2$, ток $I = U/R$, напряжение на первом $U_1 = IR_1$.',
+    'Количество теплоты на нагрев $Q = cm\\Delta t$, на плавление $Q = \\lambda m$; складываю и делю на мощность, чтобы найти время.',
+    'Импульс сохраняется: $m_1v_1 = (m_1+m_2)u$, после неупругого удара $u = \\dfrac{m_1v_1}{m_1+m_2}$.'];
+  var pool=PROBLEMS.filter(function(p){return p.lvl<=2}),days=[0,1,2,3,4,5,7,8,10,12,14,15,17,19,21,22],sc=[95,88,70,100,60,85,40,90,75,100,55,80,92,65,100,78];
+  S.subs=days.map(function(d,i){var p=pool[(i*7+3)%pool.length];return {pid:p.id,text:texts[i%texts.length],score:sc[i],ts:now-d*D-(i%3+1)*3600000}}).sort(function(a,b){return a.ts-b.ts});
+  var p0=S.subs.length?S.subs[S.subs.length-1].pid:null;
+  S.chats={};S.hints={};
+  if(p0)S.chats[p0]=[{r:'me',t:'Не понимаю, с чего начать'},{r:'ai',t:'Начни с рисунка: какие силы действуют на тело? Запиши второй закон Ньютона в проекции на ось движения — что получится?'},
+    {r:'me',t:'$ma = F - F_{тр}$, а $F_{тр} = \\mu N$'},{r:'ai',t:'Верно! Теперь подумай: чему равна сила реакции опоры $N$ на горизонтальной поверхности?'}];
+  S.contests={};var c=byId(CONTESTS,1);
+  if(c&&c.sets){var div=divOf(1240),ids=c.sets[div],st={start:Date.parse(c.date+'T10:00:00')+3600000,div:div,rated:true,ans:{},done:true,from:1240};
+    st.end=st.start+52*60000;ids.forEach(function(id,i){var q=nq(id);if(q)st.ans[id]=i<3?q.a:(i===3?q.a*1.5:null)});
+    S.contests[c.id]=st;cScore(c);var h=S.ratingHist[S.ratingHist.length-1];if(h&&h.why==='c'+c.id)h.ts=st.end}
+  var solved=[];S.subs.forEach(function(x){if(x.score>=70&&solved.indexOf(x.pid)<0)solved.push(x.pid)});
+  var openMis=MIS.filter(function(m){return (mis[m.id]==='mis'||mis[m.id]==='gap')&&!S.misFix[m.id]}),done={};S.subs.forEach(function(x){done[x.pid]=1});
+  var fresh=PROBLEMS.filter(function(p){return !done[p.id]&&p.lvl===2}).slice(0,4);
+  var W={ru:['Сила нужна для изменения скорости, а не для её поддержания.','Закрепи второй закон Ньютона на новой ситуации.','Задача на закон сохранения — сначала выбери систему тел.','Разберём, почему ускорение и скорость могут быть направлены по-разному.'],
+    kk:['Күш жылдамдықты сақтау үшін емес, өзгерту үшін керек.','Ньютонның екінші заңын жаңа жағдайда бекіт.','Сақталу заңына есеп — алдымен денелер жүйесін таңда.','Үдеу мен жылдамдық неге әртүрлі бағытталуы мүмкін екенін талдаймыз.'],
+    en:['Force changes velocity rather than keeps it.','Practise Newton’s second law in a new situation.','A conservation problem: choose the system first.','Why acceleration and velocity can point different ways.']}[LANG]||[];
+  var steps=[];if(firstMis)steps.push({type:'mis',id:firstMis.id,why:W[0]});
+  solved.slice(-3).forEach(function(id){steps.push({type:'prob',id:id,why:W[1]})});
+  if(openMis[0])steps.push({type:'mis',id:openMis[0].id,why:W[3]});
+  fresh.forEach(function(p,i){steps.push({type:'prob',id:p.id,why:W[i%2?2:1]})});
+  if(openMis[1])steps.push({type:'mis',id:openMis[1].id,why:W[3]});
+  S.plan={ts:now-D,lang:LANG,level:2,summary:{ru:'Механика идёт уверенно, но есть заблуждения о связи силы и скорости. Сначала закрываем их, затем — законы сохранения и электростатика.',kk:'Механика сенімді, бірақ күш пен жылдамдық байланысы туралы қате түсініктер бар. Алдымен соларды жабамыз, сосын — сақталу заңдары мен электростатика.',en:'Mechanics is solid, but there are misconceptions about force and velocity. We close those first, then conservation laws and electrostatics.'}[LANG],reason:'',steps:steps};
+  S.planStale=false;PLAN_AUTO=true;S.demo=true;save();
+}
+
 /* ---------- admin panel (visible only to accounts listed in public.admins) ---------- */
 var IS_ADMIN=false,ADM={rows:null,busy:false,err:null,fnMissing:false,q:'',sort:'act',role:'all',ts:0};
 function admCheck(){
@@ -1917,7 +1958,7 @@ function admRows(){
   var rows=admFiltered();
   if(!rows.length)return '<tr><td colspan="7" class="adm-none">'+t('adm_none')+'</td></tr>';
   return rows.map(function(r){var s=r.st,idle=s.last&&Date.now()-s.last>14*864e5;
-    return '<tr class="adm-row" data-href="#admin-'+r.id+'" tabindex="0"><td><div class="adm-who">'+admAvatar(r)+'<div><b>'+esc(admName(r))+'</b>'+(r.role&&r.role!=='student'?' <span class="pill p-blue">'+esc(t('role_'+r.role))+'</span>':'')+'<div class="cap">'+esc(r.email||'')+'</div></div></div></td>'+
+    return '<tr class="adm-row" data-href="#admin-'+r.id+'" tabindex="0"><td><div class="adm-who">'+admAvatar(r)+'<div><b>'+esc(admName(r))+'</b>'+(r.role&&r.role!=='student'?' <span class="pill p-blue">'+esc(t('role_'+r.role))+'</span>':'')+''+(r.data&&r.data.demo?' <span class="pill p-gray">demo</span>':'')+'<div class="cap">'+esc(r.email||'')+'</div></div></div></td>'+
     '<td data-l="'+esc(t('f_grade'))+'">'+esc(r.grade||'—')+'</td>'+
     '<td data-l="'+esc(t('rt_h'))+'">'+(s.rating!=null?'<b style="color:'+TCOL[titleIdx(s.rating)]+'">'+s.rating+'</b> <span class="cap">Div. '+divOf(s.rating)+'</span>':'<span class="cap">—</span>')+'</td>'+
     '<td data-l="'+esc(t('adm_c_solved'))+'"><b>'+s.solved+'</b> <span class="cap">/ '+s.tries+'</span></td>'+
@@ -3212,10 +3253,7 @@ document.addEventListener('click',function(e){
   else if(a==='reset'){
     if(b.getAttribute('data-c')!=='1'){b.setAttribute('data-c','1');b.textContent=t('reset_c');return}
     S.subs=[];S.hints={};S.chats={};S.ment={};markStale();save();toast(t('t_reset'));render()}
-  else if(a==='demo'){
-    var nw=Date.now(),DY=86400000,pl=[[1,90],[2,85],[7,80],[3,55],[4,40]];
-    [0,1,2,4,5,9,10,11,15,16,20,23,30,31].forEach(function(d,i){var x=pl[i%pl.length];S.subs.push({pid:x[0],text:'Demo',score:x[1],ts:nw-d*DY-i*3600000})});
-    markStale();save();toast(t('t_demo'));render()}
+  else if(a==='demo'){standDemo();toast(t('t_demo'));nav('dashboard')}
   else if(a==='toast'){toast(t(b.getAttribute('data-m')))}
   else if(a==='logout'){doLogout()}
   else if(a==='dx-start'){DX.i=0;DX.anim=true;render();DX.anim=false}
