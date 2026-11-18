@@ -929,7 +929,7 @@ cond:'Условие',scheme:'Схема',
 diag_aria:'Кольцо радиуса R катится без проскальзывания по наклонной плоскости с углом θ = 30°',
 diag_cap:'Схема к задаче: кольцо катится без проскальзывания по плоскости с углом $\\theta = 30^\\circ$. Красная точка — точка касания.',
 your_sol:'Твоё решение',sol_ph:'Запиши ход решения: какие законы используешь, какие уравнения составляешь, что получилось.',
-sol_note:'Оценка предварительная: сверяет запись с ключевыми идеями задачи. Писать можно на любом из трёх языков. Формулы можно писать в LaTeX: $v = \\dfrac{s}{t}$.',
+sol_note:'Оценка предварительная: главное — верный итоговый ответ числом в конце, плюс ход решения (законы и формулы). Писать можно на любом из трёх языков. Формулы можно писать в LaTeX: $v = \\dfrac{s}{t}$.',
 submit:'Отправить решение',tries:'Попытки',ai_h:'AI-помощник',
 ai_note:'Настоящий ИИ (Gemini). Видит условие задачи и твоё последнее решение. Даёт по одной подсказке, но не решает за тебя.',
 ask_ph:'Спроси про эту задачу...',ask_aria:'Вопрос ИИ',hint:'Подсказка',send:'Отправить',
@@ -1028,7 +1028,7 @@ cond:'Шарты',scheme:'Сызба',
 diag_aria:'R радиусты сақина θ = 30° бұрышы бар көлбеу жазықтықпен сырғанаусыз домалайды',
 diag_cap:'Есептің сызбасы: сақина $\\theta = 30^\\circ$ бұрышы бар жазықтықпен сырғанаусыз домалайды. Қызыл нүкте — жанасу нүктесі.',
 your_sol:'Сенің шешімің',sol_ph:'Шешу барысын жаз: қандай заңдарды қолданасың, қандай теңдеулер құрасың, не шықты.',
-sol_note:'Баға алдын ала қойылады: жазбаны есептің негізгі идеяларымен салыстырады. Үш тілдің кез келгенінде жазуға болады. Формулаларды LaTeX-пен жазуға болады: $v = \\dfrac{s}{t}$.',
+sol_note:'Баға алдын ала қойылады: ең бастысы — соңында сан түріндегі дұрыс жауап және шешу барысы (заңдар мен формулалар). Үш тілдің кез келгенінде жазуға болады. Формулаларды LaTeX-пен жазуға болады: $v = \\dfrac{s}{t}$.',
 submit:'Шешімді жіберу',tries:'Әрекеттер',ai_h:'AI-көмекші',
 ai_note:'Нағыз ЖИ (Gemini). Есептің шартын және соңғы шешіміңді көреді. Кеңесті бір-бірден береді, бірақ сен үшін шешпейді.',
 ask_ph:'Осы есеп туралы сұра...',ask_aria:'ЖИ-ге сұрақ',hint:'Кеңес',send:'Жіберу',
@@ -1127,7 +1127,7 @@ cond:'Problem',scheme:'Diagram',
 diag_aria:'A ring of radius R rolls without slipping down a plane inclined at θ = 30°',
 diag_cap:'Diagram: a ring rolls without slipping down a plane inclined at $\\theta = 30^\\circ$. The red dot is the contact point.',
 your_sol:'Your solution',sol_ph:'Write out your reasoning: which laws you use, which equations you set up, and what you get.',
-sol_note:'Preliminary score: checks your write-up against the problem’s key ideas. You can write in any of the three languages. You can write formulas in LaTeX: $v = \\dfrac{s}{t}$.',
+sol_note:'Preliminary score: what matters most is the correct final answer as a number at the end, plus your reasoning (laws and formulas). You can write in any of the three languages. You can write formulas in LaTeX: $v = \\dfrac{s}{t}$.',
 submit:'Submit solution',tries:'Attempts',ai_h:'AI assistant',
 ai_note:'Real AI (Gemini). It sees the problem statement and your latest solution. It gives one hint at a time but won’t solve it for you.',
 ask_ph:'Ask about this problem...',ask_aria:'Question for the AI',hint:'Hint',send:'Send',
@@ -2832,14 +2832,27 @@ function askAI(pid){
 }
 function md(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([^`]+)`/g,'<code>$1</code>')}
 function gradeSolution(p,text){
-  var low=text.toLowerCase();
+  var low=String(text||'').toLowerCase().replace(/−/g,'-');
   // слова длиной от 3 букв, в которых есть гласная (ru / kk / en): отсекает «ррррр», «фывфыв» и т.п.
   var words=(low.match(/[a-zа-яёәғқңөұүһі]{3,}/g)||[]).filter(function(w){return /[аәеёиоөуұүыіэюяaeiouy]/.test(w)&&!/(.{1,3})\1{2,}/.test(w)});
   var uniq={};words.forEach(function(w){uniq[w]=1});
-  if(Object.keys(uniq).length<5)return 0; // меньше 5 разных осмысленных слов — это не решение
-  var hit=0;
-  p.keys.forEach(function(k){try{if(new RegExp(k,'i').test(low))hit++}catch(e){}});
-  return Math.round(100*hit/p.keys.length); // баллы только за найденные ключевые идеи
+  var nUniq=Object.keys(uniq).length,hasRel=/=|≈|\\frac|\\dfrac|\//.test(low);
+  if(nUniq<4&&!hasRel)return 0;                                      // не решение: ни слов, ни формул
+  var num=[],con=[];p.keys.forEach(function(k){(/[0-9]/.test(k)?num:con).push(k)});
+  function hits(arr){var h=0;arr.forEach(function(k){try{if(new RegExp(k,'i').test(low))h++}catch(e){}});return h}
+  var c=con.length?hits(con)/con.length:1,eq=(low.match(/=/g)||[]).length;
+  c=Math.max(c,Math.min(1,eq/5));                                    // цепочка формул тоже показывает ход решения
+  if(!num.length)return Math.min(85,Math.round(100*c));               // без числового ответа — осторожно, с потолком
+  var n=hits(num)/num.length;
+  // итоговый ответ: последнее число в тексте (без показателей степени в единицах) должно входить в совпадение с ключом
+  var clean=low.replace(/(\^|\*\*)\s*\{?-?\d+\}?/g,'').replace(/[²³]/g,'');
+  var lastEnd=-1,re=/\d+(?:[.,]\d+)?/g,m;while((m=re.exec(clean)))lastEnd=m.index+m[0].length;
+  var keyEnd=-1;num.forEach(function(k){try{var r=new RegExp(k,'gi'),mm;while((mm=r.exec(clean))){keyEnd=Math.max(keyEnd,mm.index+mm[0].length);if(!mm[0].length)r.lastIndex++}}catch(e){}});
+  var finalOk=n>0&&keyEnd>=lastEnd;
+  var sc=60*n+40*c;
+  if(!finalOk)sc=Math.min(sc,45);                                     // в конце записан другой (неверный) ответ
+  if(!hasRel&&nUniq<12)sc=Math.min(sc,40);                            // нет ни одного соотношения — набор слов, а не решение
+  return Math.round(sc);
 }
 
 /* ---------- router ---------- */
