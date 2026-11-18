@@ -2064,7 +2064,7 @@ var FAKE_NAMES=['Айгерим Нурланова','Данияр Ержанов
 function fakeRnd(n){var x=Math.sin(n*9301+49297)*233280;return x-Math.floor(x)}
 function fakeUsers(){
   if(fakeUsers.c)return fakeUsers.c;
-  fakeUsers.c=FAKE_NAMES.map(function(nm,i){var r=Math.round((880+fakeRnd(i+1)*980)/5)*5;return {id:'demo-'+i,name:nm,grade:String(7+Math.floor(fakeRnd(i+40)*5)),rating:r,contests:1+Math.floor(fakeRnd(i+7)*4),fake:true}});
+  fakeUsers.c=FAKE_NAMES.map(function(nm,i){var r=Math.round((880+fakeRnd(i+1)*980)/5)*5;return {id:'dead0000-0000-4000-8000-'+('000000000000'+i).slice(-12),name:nm,grade:String(7+Math.floor(fakeRnd(i+40)*5)),rating:r,contests:1+Math.floor(fakeRnd(i+7)*4),fake:true}});
   return fakeUsers.c;
 }
 function fakeResult(c,u,i){
@@ -2086,6 +2086,22 @@ function demoSet(on){
   sb.from('site_settings').upsert({key:'demo_users',value:{on:on},updated_at:new Date().toISOString()}).then(function(r){
     if(r.error)throw r.error;DEMO_ON=on;toast(t(on?'dm_on_t':'dm_off_t'));render(true)
   }).catch(function(e){toast(/site_settings|relation|does not exist|schema cache/i.test(String(e&&e.message))?t('dm_nosql'):errText(e))});
+}
+function fakeData(u,i){
+  var now=Date.now(),D=864e5,n=3+Math.floor(fakeRnd(i+3)*12),subs=[],skill=Math.min(1,Math.max(0,(u.rating-800)/1100)),pool=PROBLEMS;
+  for(var k=0;k<n;k++){var p=pool[Math.floor(fakeRnd(i*31+k*7)*pool.length)],sc=Math.round(Math.min(100,Math.max(10,40+skill*55+(fakeRnd(i*11+k)-0.5)*50))/5)*5;
+    subs.push({pid:p.id,score:sc,ts:now-Math.floor(fakeRnd(i*5+k*13)*20+(i%4))*D-k*3600000,text:'Записываю второй закон Ньютона в проекциях и выражаю ускорение; затем кинематика для времени движения.'})}
+  var mis={};MIS.forEach(function(m,j){var r=fakeRnd(i*17+j);mis[m.id]=r<skill*0.8?'ok':r<skill*0.8+0.15?'weak':r<0.9?'mis':'gap'});
+  var c=byId(CONTESTS,1),res=c?fakeResult(c,u,i):null,contests={};
+  if(res)contests[1]={done:true,div:res.div,solved:res.solved,pts:res.pts,rated:true,from:u.rating-res.delta,to:u.rating,start:now-4*D,end:now-4*D+res.min*60000,ans:{}};
+  return {subs:subs.sort(function(a,b){return a.ts-b.ts}),diag:{done:true,ts:now-25*D,answers:{},lv:{},mis:mis,level:skill>0.66?3:skill>0.33?2:1},misFix:{},rating:u.rating,contests:contests,demo:true};
+}
+function admAll(){
+  var R=(ADM.rows||[]).slice();
+  if(DEMO_ON&&ADM.rows){if(!admAll.f)admAll.f=fakeUsers().map(function(u,i){var now=Date.now(),r={id:'de000000-0000-4000-8000-'+('00000000000'+i).slice(-12),name:u.name,email:'',grade:u.grade,role:'student',school:['НИШ ФМН','РФМШ','БИЛ','Лицей №1'][i%4],rating:u.rating,contests:u.contests,
+      created_at:new Date(now-(30+i)*864e5).toISOString(),last_sign_in_at:new Date(now-Math.floor(fakeRnd(i+90)*9)*864e5).toISOString(),provider:i%3?'google':'email',confirmed:true,data:fakeData(u,i),fake:true};r.st=admStats(r);return r});
+    R=R.concat(admAll.f)}
+  return R;
 }
 function cStandings(c){
   if(!DEMO_ON||!c.sets||cState(c)==='soon')return '';
@@ -2142,7 +2158,7 @@ function admName(r){return r.name||(r.email?r.email.split('@')[0]:'—')}
 function admAvatar(r,big){var w=admName(r).trim().split(/\s+/);var ini=((w[0]||'?')[0]+(w[1]?w[1][0]:'')).toUpperCase();
   return '<span class="adm-av'+(big?' big':'')+'" style="--h:'+(parseInt(String(r.id).slice(0,6),16)%360)+'">'+esc(ini)+'</span>'}
 function admFiltered(){
-  var q=ADM.q.trim().toLowerCase(),rows=(ADM.rows||[]).filter(function(r){
+  var q=ADM.q.trim().toLowerCase(),rows=admAll().filter(function(r){
     if(ADM.role!=='all'&&(r.role||'student')!==ADM.role)return false;
     return !q||(admName(r)+' '+(r.email||'')+' '+(r.school||'')).toLowerCase().indexOf(q)>=0});
   var k=ADM.sort;
@@ -2172,7 +2188,7 @@ function adminPage(){
   admLoad();
   var head='<div class="ph"><div><h1>'+t('adm_h')+'</h1><p>'+t('adm_p')+'</p></div><div class="fa"><button class="btn sm" data-act="adm-refresh"'+(ADM.busy?' disabled':'')+'>'+t('adm_refresh')+'</button></div></div>';
   if(!ADM.rows)return content(head+'<div class="card">'+(ADM.err?'<div class="msg err" style="max-width:none">'+esc(ADM.err)+'</div>':'<div class="sub plan-wait"><span class="dots"><i></i><i></i><i></i></span>'+t('adm_loading')+'</div>')+'</div>');
-  var R=ADM.rows,wk=R.filter(function(r){return r.st.last&&Date.now()-r.st.last<7*864e5}).length,dg=R.filter(function(r){return r.st.diag}).length,
+  var R=admAll(),wk=R.filter(function(r){return r.st.last&&Date.now()-r.st.last<7*864e5}).length,dg=R.filter(function(r){return r.st.diag}).length,
     rt=R.filter(function(r){return r.st.rating!=null}),avgR=rt.length?Math.round(rt.reduce(function(a,r){return a+r.st.rating},0)/rt.length):null;
   var kpi=stat;
   var h=head+(ADM.fnMissing?'<div class="msg err" style="max-width:none;margin-bottom:14px">'+t('adm_fn_missing')+'</div>':'')+
@@ -2192,7 +2208,7 @@ function adminStudent(id){
   var back='<a class="back" href="#admin">'+ic('left')+t('adm_back')+'</a>';
   if(!IS_ADMIN)return adminPage();
   if(!ADM.rows){admLoad();return content(back+'<div class="card"><div class="sub plan-wait"><span class="dots"><i></i><i></i><i></i></span>'+t('adm_loading')+'</div></div>')}
-  var r=ADM.rows.filter(function(x){return x.id===id})[0];
+  var r=admAll().filter(function(x){return x.id===id})[0];
   if(!r)return content(back+'<div class="card"><div class="sub">'+t('adm_none')+'</div></div>');
   var s=r.st,d=r.data||{},dt=function(x){return x?fmtDay(new Date(x)):'—'};
   var h=back+'<div class="card adm-hero">'+admAvatar(r,true)+'<div class="adm-hero-m"><h1>'+esc(admName(r))+'</h1><div class="cap">'+esc(r.email||'')+(r.provider?' · '+esc(r.provider==='google'?'Google':t('adm_pw')):'')+(r.confirmed===false?' · <span style="color:var(--orange)">'+t('adm_unconf')+'</span>':'')+'</div>'+
